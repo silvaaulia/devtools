@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# XAMPP
+xampp/
+htdocs/
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if any)
+node_modules/
+package-lock.json

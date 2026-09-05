@@ -1,0 +1,17 @@
+RewriteEngine On
+
+# Block sensitive internal files
+<FilesMatch "^\.(env|git|htaccess|htpasswd|ini|log|sh|sql|bak)$">
+    Require all denied
+</FilesMatch>
+
+# Block internal directories
+RewriteRule ^(app|config|tools) - [F,L]
+
+# Block hidden files
+RewriteRule /\. - [F,L]
+
+# Front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
