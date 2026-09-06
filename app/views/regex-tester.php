@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
 <body>
@@ -44,7 +44,7 @@
 <div class="tool-header">
 <div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / Regex</div>
 <h1 class="tool-title">Regex Tester</h1>
-<p class="tool-desc">Test regular expressions and see matches, groups, and replacements in real time.</p>
+<p class="tool-desc">Test regular expressions and see matches, groups, and replacements.</p>
 </div>
 
 <div class="editor-container">
@@ -60,22 +60,10 @@
 </div>
 <textarea class="editor-textarea" id="regexInput" placeholder="^\w+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,}$"></textarea>
 <div class="editor-flags">
-<label class="flag-option">
-<input type="checkbox" id="flagG" checked>
-<code>g</code> Global
-</label>
-<label class="flag-option">
-<input type="checkbox" id="flagI">
-<code>i</code> Case-insensitive
-</label>
-<label class="flag-option">
-<input type="checkbox" id="flagM">
-<code>m</code> Multiline
-</label>
-<label class="flag-option">
-<input type="checkbox" id="flagS">
-<code>s</code> Dotall
-</label>
+<label class="flag-option"><input type="checkbox" id="flagG" checked><code>g</code> Global</label>
+<label class="flag-option"><input type="checkbox" id="flagI"><code>i</code> Case-insensitive</label>
+<label class="flag-option"><input type="checkbox" id="flagM"><code>m</code> Multiline</label>
+<label class="flag-option"><input type="checkbox" id="flagS"><code>s</code> Dotall</label>
 </div>
 <div class="editor-header">
 <span class="editor-label"><span class="editor-label-dot"></span>Test String</span>
@@ -84,7 +72,7 @@
 <button class="btn btn-ghost btn-sm" id="clearTextBtn" title="Clear">&#10005;</button>
 </div>
 </div>
-<textarea class="editor-textarea" id="textInput" placeholder="test@example.com&#10;admin@site.org&#10;hello@world.net&#10;invalid-email&#10;user.name@domain.co.uk"></textarea>
+<textarea class="editor-textarea" id="textInput" placeholder="test@example.com&#10;admin@site.org&#10;hello@world.net&#10;invalid-email"></textarea>
 </div>
 
 <div class="editor-panel">
@@ -107,17 +95,13 @@
 </div>
 
 <div class="editor-panel" id="replacePanel" style="display:none;">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot input"></span>Replace With</span>
-</div>
-<textarea class="editor-textarea" id="replaceInput" placeholder="$1" style="min-height:100px;"></textarea>
+<div class="editor-header"><span class="editor-label"><span class="editor-label-dot input"></span>Replace With</span></div>
+<textarea class="editor-textarea" id="replaceInput" placeholder="$1" style="min-height:80px;"></textarea>
 <div class="editor-header" style="border-top:1px solid var(--border-color);">
-<span class="editor-label"><span class="editor-label-dot"></span>Replacement Result</span>
-<div class="editor-actions">
-<button class="btn btn-ghost btn-sm" id="copyReplaceBtn" title="Copy">&#128203;</button>
+<span class="editor-label"><span class="editor-label-dot"></span>Result</span>
+<div class="editor-actions"><button class="btn btn-ghost btn-sm" id="copyReplaceBtn" title="Copy">&#128203;</button></div>
 </div>
-</div>
-<pre><code class="language-js" id="replaceOutput" style="min-height:100px; padding:16px; white-space:pre-wrap; overflow:auto; background:var(--bg-editor);">Replacement result will appear here</code></pre>
+<pre><code class="language-js" id="replaceOutput" style="min-height:80px; padding:12px; white-space:pre-wrap; background:var(--bg-editor);">Result will appear here</code></pre>
 </div>
 
 <div id="messageArea"></div>
