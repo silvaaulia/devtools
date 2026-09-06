@@ -17,17 +17,26 @@
 <header class="header">
 <div class="container header-inner">
 <a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
-<nav class="nav-categories">
+<div class="header-nav">
+<button class="nav-link" onclick="location.href='/'">All Tools</button>
+<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
+<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
+<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
+<button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
+</div>
+<div class="header-actions">
+<a href="https://github.com/silvaaulia/devtools" target="_blank" class="icon-btn" title="GitHub">&#128187;</a>
+<button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
+<button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</div>
+<nav class="mobile-nav" id="mobileNav">
 <button class="nav-link" onclick="location.href='/'">All Tools</button>
 <button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
 <button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
 <button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
 <button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
 </nav>
-<div class="header-actions">
-<button class="icon-btn" id="themeToggle" title="Toggle theme"><span id="themeIcon">&#9790;</span></button>
-</div>
-</div>
 </header>
 
 <main class="tool-page">
@@ -121,5 +130,6 @@
 
 <script src="/public/assets/js/regex-tester.js"></script>
 <script src="/public/assets/js/theme.js"></script>
+<script>document.getElementById('hamburger')?.addEventListener('click', function(){this.classList.toggle('active');document.getElementById('mobileNav')?.classList.toggle('active');});</script>
 </body>
 </html>

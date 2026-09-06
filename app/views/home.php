@@ -25,22 +25,33 @@
 DevTools
 </a>
 
-<nav class="nav-categories" id="navCategories">
+<div class="header-nav">
 <button class="nav-link active" data-category="all">All Tools</button>
 <button class="nav-link" data-category="formatters">Formatters</button>
-<button class="nav-link" data-category="minifiers">Minifiers</button>
+<button class="nav-link" data-category="converters">Converters</button>
+<button class="nav-link" data-category="encoders">Encoders</button>
+<button class="nav-link" data-category="validators">Validators</button>
+<button class="nav-link" data-category="testers">Testers</button>
+</div>
+
+<div class="header-actions">
+<a href="https://github.com/silvaaulia/devtools" target="_blank" class="icon-btn" title="GitHub">&#128187;</a>
+<button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
+<button class="hamburger" id="hamburger" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+
+<!-- Mobile Menu -->
+<nav class="mobile-nav" id="mobileNav">
+<button class="nav-link active" data-category="all">All Tools</button>
+<button class="nav-link" data-category="formatters">Formatters</button>
 <button class="nav-link" data-category="converters">Converters</button>
 <button class="nav-link" data-category="encoders">Encoders</button>
 <button class="nav-link" data-category="validators">Validators</button>
 <button class="nav-link" data-category="testers">Testers</button>
 </nav>
-
-<div class="header-actions">
-<button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-<span id="themeIcon">&#9790;</span>
-</button>
-</div>
-</div>
 </header>
 
 <!-- HERO -->
@@ -55,80 +66,14 @@ Format, validate, convert, encode, and test your code instantly. No signup requi
 
 <div class="search-box">
 <span class="search-icon">&#128269;</span>
-<input type="text" class="search-input" id="searchInput" placeholder="Search tools..." autocomplete="off">
+<input type="text" class="search-input" id="searchInput" placeholder="Search 30+ dev tools..." autocomplete="off">
 </div>
 </div>
 </section>
 
-<!-- ALL TOOLS -->
+<!-- TOOLS GRID -->
 <main class="container">
-
-<!-- FORMATTERS -->
-<section class="section" data-category="formatters">
-<div class="section-header">
-<h2 class="section-title">
-<span class="section-title-icon">&#9998;</span>
-Formatters
-</h2>
-</div>
-<div class="tools-grid" id="formattersGrid"></div>
-</section>
-
-<!-- MINIFIERS -->
-<section class="section" data-category="minifiers">
-<div class="section-header">
-<h2 class="section-title">
-<span class="section-title-icon">&#128195;</span>
-Minifiers
-</h2>
-</div>
-<div class="tools-grid" id="minifiersGrid"></div>
-</section>
-
-<!-- CONVERTERS -->
-<section class="section" data-category="converters">
-<div class="section-header">
-<h2 class="section-title">
-<span class="section-title-icon">&#128260;</span>
-Converters
-</h2>
-</div>
-<div class="tools-grid" id="convertersGrid"></div>
-</section>
-
-<!-- ENCODERS -->
-<section class="section" data-category="encoders">
-<div class="section-header">
-<h2 class="section-title">
-<span class="section-title-icon">&#128274;</span>
-Encoders & Decoders
-</h2>
-</div>
-<div class="tools-grid" id="encodersGrid"></div>
-</section>
-
-<!-- VALIDATORS -->
-<section class="section" data-category="validators">
-<div class="section-header">
-<h2 class="section-title">
-<span class="section-title-icon">&#10004;</span>
-Validators
-</h2>
-</div>
-<div class="tools-grid" id="validatorsGrid"></div>
-</section>
-
-<!-- TESTERS -->
-<section class="section" data-category="testers">
-<div class="section-header">
-<h2 class="section-title">
-<span class="section-title-icon">&#128270;</span>
-Testers & Utilities
-</h2>
-</div>
-<div class="tools-grid" id="testersGrid"></div>
-</section>
-
+<div class="tools-grid" id="toolsGrid"></div>
 </main>
 
 <!-- FOOTER -->
@@ -142,5 +87,11 @@ Testers & Utilities
 
 <script src="/public/assets/js/theme.js"></script>
 <script src="/public/assets/js/home.js"></script>
+<script>
+document.getElementById('hamburger').addEventListener('click', function() {
+    this.classList.toggle('active');
+    document.getElementById('mobileNav').classList.toggle('active');
+});
+</script>
 </body>
 </html>

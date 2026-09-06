@@ -17,7 +17,7 @@
 <header class="header">
 <div class="container header-inner">
 <a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
-<nav class="nav-categories">
+<button class="hamburger" id="hamburger" aria-label="Menu"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button><nav class="nav-categories" id="nav-categories">
 <button class="nav-link" onclick="location.href='/'">All Tools</button>
 <button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
 <button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
@@ -78,5 +78,6 @@
 <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
 <script src="/public/assets/js/yaml-to-json.js"></script>
 <script src="/public/assets/js/theme.js"></script>
+<script>document.getElementById("hamburger")?.addEventListener("click",()=>{document.getElementById("nav-categories")?.classList.toggle("active");document.getElementById("hamburger")?.classList.toggle("active")});</script>
 </body>
 </html>
