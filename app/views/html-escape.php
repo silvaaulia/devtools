@@ -67,7 +67,7 @@
 
 <div class="drop-zone" id="dropZone">
 <div class="drop-zone-icon">&#128194;</div>
-<div class="drop-zone-text">Drop a file here or <strong>click to upload</strong></div>
+<div class="drop-zone-text"><strong>Drop file</strong> or click to upload</div>
 </div>
 
 <div class="editor-header">

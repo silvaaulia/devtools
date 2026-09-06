@@ -638,11 +638,31 @@ pre[class*="language-"], code[class*="language-"] {
     display: none;
     border: 2px dashed var(--border-color);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 16px;
     margin: 12px 16px;
     text-align: center;
     transition: all 0.2s;
     cursor: pointer;
+    background: var(--bg-tertiary);
+}
+
+.drop-zone:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+.drop-zone-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.drop-zone-text {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.drop-zone-text strong {
+    color: var(--accent);
 }
 
 .drop-zone:hover,
@@ -676,18 +696,22 @@ pre[class*="language-"], code[class*="language-"] {
     font-size: 11px;
     color: var(--text-muted);
     margin-left: auto;
+    padding: 4px 8px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
 }
 
 .kbd {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 10px;
     font-family: var(--font-mono);
+    font-weight: 600;
 }
