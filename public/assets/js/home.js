@@ -1,40 +1,40 @@
 // Tool definitions with icons
 const tools = [
     // Formatters
-    { name: 'JSON Formatter', url: '/json-formatter', category: 'formatters', desc: 'Format and beautify JSON data', icon: '&#128195;' },
-    { name: 'XML Formatter', url: '/xml-formatter', category: 'formatters', desc: 'Format and beautify XML documents', icon: '&#128195;' },
-    { name: 'HTML Formatter', url: '/html-formatter', category: 'formatters', desc: 'Format and beautify HTML code', icon: '&#128195;' },
-    { name: 'CSS Formatter', url: '/css-formatter', category: 'formatters', desc: 'Format and beautify CSS stylesheets', icon: '&#128195;' },
-    { name: 'SQL Formatter', url: '/sql-formatter', category: 'formatters', desc: 'Format and beautify SQL queries', icon: '&#128195;' },
+    { name: 'JSON Formatter', url: '/json-formatter', category: 'formatters', desc: 'Format and beautify JSON data', icon: '{ }' },
+    { name: 'XML Formatter', url: '/xml-formatter', category: 'formatters', desc: 'Format and beautify XML documents', icon: '</>' },
+    { name: 'HTML Formatter', url: '/html-formatter', category: 'formatters', desc: 'Format and beautify HTML code', icon: '<>' },
+    { name: 'CSS Formatter', url: '/css-formatter', category: 'formatters', desc: 'Format and beautify CSS stylesheets', icon: '#' },
+    { name: 'SQL Formatter', url: '/sql-formatter', category: 'formatters', desc: 'Format and beautify SQL queries', icon: 'DB' },
 
     // Minifiers
-    { name: 'JSON Minifier', url: '/json-minifier', category: 'minifiers', desc: 'Minify JSON by removing whitespace', icon: '&#128465;' },
-    { name: 'CSS Minifier', url: '/css-minifier', category: 'minifiers', desc: 'Minify CSS for faster page loads', icon: '&#128465;' },
-    { name: 'JavaScript Minifier', url: '/javascript-minifier', category: 'minifiers', desc: 'Minify JavaScript code', icon: '&#128465;' },
+    { name: 'JSON Minifier', url: '/json-minifier', category: 'minifiers', desc: 'Minify JSON by removing whitespace', icon: '{}' },
+    { name: 'CSS Minifier', url: '/css-minifier', category: 'minifiers', desc: 'Minify CSS for faster page loads', icon: '#' },
+    { name: 'JavaScript Minifier', url: '/javascript-minifier', category: 'minifiers', desc: 'Minify JavaScript code', icon: 'JS' },
 
     // Converters
-    { name: 'JSON to XML', url: '/json-to-xml', category: 'converters', desc: 'Convert JSON to XML format', icon: '&#128260;' },
-    { name: 'XML to JSON', url: '/xml-to-json', category: 'converters', desc: 'Convert XML to JSON format', icon: '&#128260;' },
-    { name: 'CSV to JSON', url: '/csv-to-json', category: 'converters', desc: 'Convert CSV to JSON array', icon: '&#128260;' },
-    { name: 'CSV to XML', url: '/csv-to-xml', category: 'converters', desc: 'Convert CSV to XML format', icon: '&#128260;' },
-    { name: 'YAML to JSON', url: '/yaml-to-json', category: 'converters', desc: 'Convert YAML to JSON', icon: '&#128260;' },
-    { name: 'JSON to YAML', url: '/json-to-yaml', category: 'converters', desc: 'Convert JSON to YAML', icon: '&#128260;' },
+    { name: 'JSON to XML', url: '/json-to-xml', category: 'converters', desc: 'Convert JSON to XML format', icon: '~>' },
+    { name: 'XML to JSON', url: '/xml-to-json', category: 'converters', desc: 'Convert XML to JSON format', icon: '~>' },
+    { name: 'CSV to JSON', url: '/csv-to-json', category: 'converters', desc: 'Convert CSV to JSON array', icon: '~>' },
+    { name: 'CSV to XML', url: '/csv-to-xml', category: 'converters', desc: 'Convert CSV to XML format', icon: '~>' },
+    { name: 'YAML to JSON', url: '/yaml-to-json', category: 'converters', desc: 'Convert YAML to JSON', icon: '~>' },
+    { name: 'JSON to YAML', url: '/json-to-yaml', category: 'converters', desc: 'Convert JSON to YAML', icon: '~>' },
 
     // Encoders
-    { name: 'Base64 Encoder', url: '/base64-encoder', category: 'encoders', desc: 'Encode text to Base64', icon: '&#128274;' },
-    { name: 'Base64 Decoder', url: '/base64-decoder', category: 'encoders', desc: 'Decode Base64 to text', icon: '&#128274;' },
-    { name: 'URL Encoder', url: '/url-encoder', category: 'encoders', desc: 'Encode URLs for safe transmission', icon: '&#128274;' },
-    { name: 'URL Decoder', url: '/url-decoder', category: 'encoders', desc: 'Decode URL-encoded strings', icon: '&#128274;' },
-    { name: 'HTML Escape', url: '/html-escape', category: 'encoders', desc: 'Escape HTML special characters', icon: '&#128274;' },
-    { name: 'XML Escape', url: '/xml-escape', category: 'encoders', desc: 'Escape XML special characters', icon: '&#128274;' },
+    { name: 'Base64 Encoder', url: '/base64-encoder', category: 'encoders', desc: 'Encode text to Base64', icon: 'Aa' },
+    { name: 'Base64 Decoder', url: '/base64-decoder', category: 'encoders', desc: 'Decode Base64 to text', icon: 'Aa' },
+    { name: 'URL Encoder', url: '/url-encoder', category: 'encoders', desc: 'Encode URLs for safe transmission', icon: 'http' },
+    { name: 'URL Decoder', url: '/url-decoder', category: 'encoders', desc: 'Decode URL-encoded strings', icon: 'http' },
+    { name: 'HTML Escape', url: '/html-escape', category: 'encoders', desc: 'Escape HTML special characters', icon: '<>' },
+    { name: 'XML Escape', url: '/xml-escape', category: 'encoders', desc: 'Escape XML special characters', icon: '</>' },
 
     // Validators
-    { name: 'JSON Validator', url: '/json-validator', category: 'validators', desc: 'Validate JSON syntax', icon: '&#10004;' },
-    { name: 'XML Validator', url: '/xml-validator', category: 'validators', desc: 'Validate XML documents', icon: '&#10004;' },
+    { name: 'JSON Validator', url: '/json-validator', category: 'validators', desc: 'Validate JSON syntax', icon: 'OK' },
+    { name: 'XML Validator', url: '/xml-validator', category: 'validators', desc: 'Validate XML documents', icon: 'OK' },
 
     // Testers
-    { name: 'Regex Tester', url: '/regex-tester', category: 'testers', desc: 'Test regular expressions', icon: '&#128270;' },
-    { name: 'Timestamp Converter', url: '/timestamp-converter', category: 'testers', desc: 'Convert between timestamps and dates', icon: '&#128270;' },
+    { name: 'Regex Tester', url: '/regex-tester', category: 'testers', desc: 'Test regular expressions', icon: '.*' },
+    { name: 'Timestamp Converter', url: '/timestamp-converter', category: 'testers', desc: 'Convert between timestamps and dates', icon: 'UTC' },
 ];
 
 // Render all tools to single grid

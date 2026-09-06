@@ -313,7 +313,8 @@ input, textarea, pre, code { font-family: var(--font-mono); }
     margin: 0 auto 16px;
     display: flex; align-items: center; justify-content: center;
     border-radius: var(--radius-md);
-    font-size: 24px;
+    font-size: 18px; font-weight: 700;
+    font-family: var(--font-mono);
 }
 .feature-icon.speed { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #2563eb; }
 .feature-icon.lock { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #059669; }
@@ -346,7 +347,8 @@ input, textarea, pre, code { font-family: var(--font-mono); }
     justify-content: center;
     background: linear-gradient(135deg, var(--accent-light), var(--accent-glow));
     color: var(--accent);
-    border-radius: var(--radius-md); font-size: 20px;
+    border-radius: var(--radius-md); font-size: 18px; font-weight: 700;
+    font-family: var(--font-mono);
 }
 
 .section-badge {
@@ -396,8 +398,10 @@ input, textarea, pre, code { font-family: var(--font-mono); }
     display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, var(--accent-light), var(--accent-glow));
     color: var(--accent);
-    border-radius: var(--radius-md); font-size: 22px;
+    border-radius: var(--radius-md); font-size: 14px; font-weight: 700;
+    font-family: var(--font-mono);
     transition: transform 0.3s;
+    letter-spacing: -1px;
 }
 .tool-card:hover .tool-card-icon { transform: scale(1.1) rotate(-5deg); }
 

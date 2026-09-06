@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
 <body>
@@ -52,7 +52,7 @@
 <section class="hero">
 <div class="container">
 <div class="hero-badge">
-<span class="hero-badge-icon">&#10024;</span>
+<span class="hero-badge-icon">&lt;/&gt;</span>
 <span>30+ Free Developer Tools</span>
 </div>
 <h1 class="hero-title">Free <span>Developer Tools</span></h1>
@@ -64,7 +64,7 @@
 
 <div class="features">
 <div class="feature-card">
-<div class="feature-icon speed">&#9889;</div>
+<div class="feature-icon speed">&lt;/&gt;</div>
 <div class="feature-title">Lightning Fast</div>
 <div class="feature-desc">Process data instantly in your browser with no server delays</div>
 </div>
@@ -74,7 +74,7 @@
 <div class="feature-desc">Your data never leaves your browser. Complete privacy guaranteed.</div>
 </div>
 <div class="feature-card">
-<div class="feature-icon cloud">&#127760;</div>
+<div class="feature-icon cloud">&#9734;</div>
 <div class="feature-title">No Signup</div>
 <div class="feature-desc">Start using immediately. No account or installation needed.</div>
 </div>
@@ -85,7 +85,7 @@
 <main class="container tools-section">
 <div class="section-header">
 <h2 class="section-title">
-<span class="section-title-icon">&#128187;</span>
+<span class="section-title-icon">&lt;/&gt;</span>
 All Tools
 </h2>
 <span class="section-badge">30+ Tools Available</span>
