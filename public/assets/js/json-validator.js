@@ -1,113 +1,68 @@
-const input = document.getElementById("jsonInput");
+// Elements
+const input = document.getElementById('jsonInput');
+const outputCode = document.getElementById('outputCode');
+const messageArea = document.getElementById('messageArea');
+const formatBtn = document.getElementById('formatBtn');
+const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
 
-const errorDetails = document.getElementById("errorDetails");
-
-const validateButton =
-    document.getElementById("validateButton");
-
-const clearButton =
-    document.getElementById("clearButton");
-
-const errorMessage =
-    document.getElementById("errorMessage");
-
-const successMessage =
-    document.getElementById("successMessage");
-
-
-function showError(message) {
-
-    errorMessage.textContent = message;
-
-    errorMessage.style.display = "block";
-
-    successMessage.style.display = "none";
+// Show message
+function showMessage(text, type = 'success') {
+    messageArea.innerHTML = `
+        <div class="alert alert-${type}">
+            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
+            <span>${text}</span>
+        </div>
+    `;
+    setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
+// Clear message
+function clearMessage() { messageArea.innerHTML = ''; }
 
-function showSuccess() {
-
-    successMessage.style.display = "block";
-
-    errorMessage.style.display = "none";
-
-    errorMessage.textContent = "";
-}
-
-
-function clearMessages() {
-
-    errorMessage.textContent = "";
-
-    errorMessage.style.display = "none";
-
-    successMessage.style.display = "none";
-
-    errorDetails.value = "";
-}
-
-
+// Validate JSON
 function validateJSON() {
-
+    clearMessage();
     const value = input.value.trim();
-
     if (!value) {
-
-        showError("Please enter JSON data.");
-
+        showMessage('Please enter JSON data.', 'error');
         return;
-
     }
-
     try {
-
         JSON.parse(value);
-
-        showSuccess();
-
-        errorDetails.value = "Your JSON is valid and well-formed.";
-
+        outputCode.textContent = 'Your JSON is valid and well-formed.';
+        showMessage('Valid JSON!', 'success');
     } catch (error) {
-
-        showError("Invalid JSON detected.");
-
-        errorDetails.value = error.message;
-
+        outputCode.textContent = 'Error: ' + error.message;
+        showMessage('Invalid JSON detected.', 'error');
     }
-
 }
 
+// Clear all
+function clearAll() {
+    input.value = '';
+    outputCode.textContent = '<span class="token comment"><!-- Validation result will appear here --></span>';
+    clearMessage();
+}
 
-validateButton.addEventListener(
-    "click",
-    validateJSON
-);
-
-
-clearButton.addEventListener(
-    "click",
-    function () {
-
-        input.value = "";
-
-        errorDetails.value = "";
-
-        clearMessages();
-
+// Copy to clipboard
+async function copyToClipboard() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to copy', 'error');
+        return;
     }
-);
-
-
-// Allow Ctrl+Enter to validate
-input.addEventListener(
-    "keydown",
-    function (e) {
-
-        if (e.ctrlKey && e.key === "Enter") {
-
-            validateJSON();
-
-        }
-
+    try {
+        await navigator.clipboard.writeText(outputCode.textContent);
+        showMessage('Copied to clipboard!', 'success');
+    } catch {
+        showMessage('Failed to copy', 'error');
     }
-);
+}
+
+// Event listeners
+formatBtn.addEventListener('click', validateJSON);
+clearBtn.addEventListener('click', clearAll);
+copyBtn.addEventListener('click', copyToClipboard);
+
+// Keyboard shortcuts
+input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') validateJSON(); });

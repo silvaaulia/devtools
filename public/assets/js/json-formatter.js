@@ -1,234 +1,139 @@
-const input = document.getElementById("jsonInput");
-const output = document.getElementById("jsonOutput");
+// Elements
+const input = document.getElementById('jsonInput');
+const outputCode = document.getElementById('outputCode');
+const messageArea = document.getElementById('messageArea');
+const formatBtn = document.getElementById('formatBtn');
+const minifyBtn = document.getElementById('minifyBtn');
+const validateBtn = document.getElementById('validateBtn');
+const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const fileInput = document.getElementById('fileInput');
 
-const formatButton = document.getElementById("formatButton");
-const minifyButton = document.getElementById("minifyButton");
-const clearButton = document.getElementById("clearButton");
-
-const copyButton = document.getElementById("copyButton");
-const downloadButton = document.getElementById("downloadButton");
-
-const fileInput = document.getElementById("fileInput");
-const errorMessage = document.getElementById("errorMessage");
-
-
-function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
+// Show message
+function showMessage(text, type = 'success') {
+    messageArea.innerHTML = `
+        <div class="alert alert-${type}">
+            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
+            <span>${text}</span>
+        </div>
+    `;
+    setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
+// Clear message
+function clearMessage() { messageArea.innerHTML = ''; }
 
-function clearError() {
-    errorMessage.textContent = "";
-    errorMessage.style.display = "none";
-}
-
-
+// Get parsed JSON
 function getJSON() {
-
     const value = input.value.trim();
-
-    if (!value) {
-        throw new Error("Please enter JSON data.");
-    }
-
+    if (!value) throw new Error('Please enter JSON data.');
     return JSON.parse(value);
 }
 
-
+// Format JSON (beautify)
 function formatJSON() {
-
-    clearError();
-
+    clearMessage();
     try {
-
         const data = getJSON();
-
-        output.value = JSON.stringify(data, null, 2);
-
+        const formatted = JSON.stringify(data, null, 2);
+        outputCode.textContent = formatted;
+        showMessage('JSON formatted successfully!', 'success');
     } catch (error) {
-
-        showError("Invalid JSON: " + error.message);
-
+        showMessage(error.message, 'error');
     }
 }
 
-
+// Minify JSON
 function minifyJSON() {
-
-    clearError();
-
+    clearMessage();
     try {
-
         const data = getJSON();
-
-        output.value = JSON.stringify(data);
-
+        const minified = JSON.stringify(data);
+        outputCode.textContent = minified;
+        showMessage('JSON minified!', 'success');
     } catch (error) {
-
-        showError("Invalid JSON: " + error.message);
-
+        showMessage(error.message, 'error');
     }
 }
 
-
-function clearAll() {
-
-    input.value = "";
-    output.value = "";
-
-    fileInput.value = "";
-
-    clearError();
-}
-
-
-async function copyResult() {
-
-    if (!output.value) {
-
-        showError("Nothing to copy.");
-
-        return;
-    }
-
+// Validate JSON
+function validateJSON() {
+    clearMessage();
     try {
+        const data = getJSON();
+        showMessage('Valid JSON! Object with ' + Object.keys(data).length + ' keys.', 'success');
+    } catch (error) {
+        showMessage('Invalid JSON: ' + error.message, 'error');
+    }
+}
 
-        await navigator.clipboard.writeText(output.value);
+// Clear all
+function clearAll() {
+    input.value = '';
+    outputCode.textContent = '<span class="token comment"><!-- Formatted JSON will appear here --></span>';
+    clearMessage();
+}
 
-        copyButton.textContent = "Copied!";
-
-        setTimeout(() => {
-            copyButton.textContent = "Copy";
-        }, 1500);
-
+// Copy to clipboard
+async function copyToClipboard() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to copy', 'error');
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(outputCode.textContent);
+        showMessage('Copied to clipboard!', 'success');
     } catch {
-
-        showError("Unable to copy result.");
-
+        showMessage('Failed to copy', 'error');
     }
 }
 
-
+// Download JSON
 function downloadJSON() {
-
-    if (!output.value) {
-
-        showError("Nothing to download.");
-
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to download', 'error');
         return;
     }
-
-    const blob = new Blob(
-        [output.value],
-        { type: "application/json" }
-    );
-
+    const blob = new Blob([outputCode.textContent], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "formatted.json";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'formatted.json';
+    a.click();
     URL.revokeObjectURL(url);
+    showMessage('Download started!', 'success');
 }
 
-
+// Load file
 function loadFile(file) {
-
-    if (!file) {
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith('.json')) {
+        showMessage('Please upload a .json file', 'error');
         return;
     }
-
-    if (!file.name.toLowerCase().endsWith(".json")) {
-
-        showError("Please upload a .json file.");
-
-        return;
-    }
-
     const reader = new FileReader();
-
-    reader.onload = function(event) {
-
-        input.value = event.target.result;
-
-        clearError();
-
+    reader.onload = (e) => {
+        input.value = e.target.result;
         formatJSON();
-
     };
-
-    reader.onerror = function() {
-
-        showError("Unable to read the file.");
-
-    };
-
+    reader.onerror = () => showMessage('Failed to read file', 'error');
     reader.readAsText(file);
 }
 
+// Event listeners
+formatBtn.addEventListener('click', formatJSON);
+minifyBtn.addEventListener('click', minifyJSON);
+validateBtn.addEventListener('click', validateJSON);
+clearBtn.addEventListener('click', clearAll);
+copyBtn.addEventListener('click', copyToClipboard);
+downloadBtn.addEventListener('click', downloadJSON);
+fileInput.addEventListener('change', (e) => loadFile(e.target.files[0]));
 
-formatButton.addEventListener("click", formatJSON);
+// Drag and drop
+input.addEventListener('dragover', (e) => { e.preventDefault(); input.classList.add('dragging'); });
+input.addEventListener('dragleave', () => input.classList.remove('dragging'));
+input.addEventListener('drop', (e) => { e.preventDefault(); input.classList.remove('dragging'); loadFile(e.dataTransfer.files[0]); });
 
-minifyButton.addEventListener("click", minifyJSON);
-
-clearButton.addEventListener("click", clearAll);
-
-copyButton.addEventListener("click", copyResult);
-
-downloadButton.addEventListener("click", downloadJSON);
-
-
-fileInput.addEventListener("change", function() {
-
-    loadFile(this.files[0]);
-
-});
-
-
-input.addEventListener("dragover", function(event) {
-
-    event.preventDefault();
-
-    input.classList.add("dragging");
-
-});
-
-
-input.addEventListener("dragleave", function() {
-
-    input.classList.remove("dragging");
-
-});
-
-
-input.addEventListener("drop", function(event) {
-
-    event.preventDefault();
-
-    input.classList.remove("dragging");
-
-    const file = event.dataTransfer.files[0];
-
-    loadFile(file);
-
-});
-
-
-input.addEventListener("keydown", function(event) {
-
-    if (event.ctrlKey && event.key === "Enter") {
-
-        formatJSON();
-
-    }
-
-});
+// Keyboard shortcuts
+input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') formatJSON(); });

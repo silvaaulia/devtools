@@ -1,141 +1,81 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>HTML Formatter - Beautify HTML Online</title>
-    <meta name="description" content="Format and beautify HTML code online with a simple browser-based HTML formatter.">
-
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="HTML Formatter - Beautify HTML Online">
-<meta property="og:description" content="Format and beautify HTML code online with a simple browser-based HTML formatter.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-
-<link rel="stylesheet" href="/public/assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Formatter - Beautify HTML Online</title>
+<meta name="description" content="Format and beautify HTML code online with a simple browser-based HTML formatter.">
 <meta name="robots" content="index, follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
-
 <body>
 
-<header class="site-header">
-<div class="container navbar">
-<a href="/" class="logo">DevTools</a>
-<nav class="main-nav">
-<a href="/">Home</a>
-<a href="/#tools">Tools</a>
-<a href="/#converters">Converters</a>
-<a href="/html-formatter">Html Formatter</a>
+<header class="header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
+<nav class="nav-categories">
+<button class="nav-link" onclick="location.href='/'">All Tools</button>
+<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
+<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
+<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
+<button class="nav-link" onclick="location.href='/regex-tester'">Regex</button>
 </nav>
-<button id="themeToggle" class="theme-button" title="Toggle dark mode" aria-label="Toggle dark mode">&#9790;</button>
+<div class="header-actions">
+<button class="icon-btn" id="themeToggle" title="Toggle theme"><span id="themeIcon">&#9790;</span></button>
+</div>
 </div>
 </header>
 
 <main class="tool-page">
-
-<section class="tool-page">
-
 <div class="container">
 
-    <h1>HTML Formatter</h1>
+<div class="tool-header">
+<div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / HTML</div>
+<h1 class="tool-title">HTML Formatter</h1>
+<p class="tool-desc">Format and beautify HTML code directly in your browser.</p>
+</div>
 
-    <p class="tool-description">
-        Format and beautify HTML code directly in your browser.
-    </p>
+<div class="editor-container">
 
-    <div class="tool-wrapper">
+<div class="editor-panel">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot input"></span>HTML Input</span>
+<div class="editor-actions">
+<label class="btn btn-ghost btn-sm" title="Upload file">&#128194;<input type="file" accept=".html" id="fileInput" style="display:none"></label>
+<button class="btn btn-ghost btn-sm" id="clearBtn" title="Clear">&#10005;</button>
+</div>
+</div>
+<textarea class="editor-textarea" id="htmlInput" placeholder="<div><h1>Hello World</h1><p>Welcome to DevTools</p></div>"></textarea>
+</div>
 
-        <div class="tool-card-panel">
-
-            <div class="tool-card-panel-header">
-                <strong>Input HTML</strong>
-            </div>
-
-            <textarea
-                class="tool-textarea" id="htmlInput"
-                placeholder='<div><h1>Hello World</h1><p>Welcome to DevTools</p></div>'
-            ></textarea>
-
-        </div>
-
-        <div class="tool-actions">
-
-            <button id="formatButton" class="tool-btn tool-btn-primary">
-                Format HTML
-            </button>
-
-            <button id="minifyButton" class="tool-btn tool-btn-secondary">
-                Minify
-            </button>
-
-            <button id="clearButton" class="tool-btn tool-btn-secondary">
-                Clear
-            </button>
-
-        </div>
-
-        <div id="errorMessage" class="tool-error"></div>
-
-        <div class="tool-card-panel">
-
-            <div class="tool-card-panel-header">
-
-                <strong>Result</strong>
-
-                <button id="copyButton" class="tool-btn tool-btn-small">
-                    Copy
-                </button>
-
-            </div>
-
-            <textarea
-                class="tool-textarea" id="htmlOutput"
-                readonly
-                placeholder="Formatted HTML will appear here..."
-            ></textarea>
-
-        </div>
-
-    </div>
-
-    <section class="tool-help">
-
-        <h2>What is HTML Formatter?</h2>
-
-        <p>
-            HTML Formatter organizes HTML code with indentation and
-            line breaks, making source code easier to read and maintain.
-        </p>
-
-        <h2>Features</h2>
-
-        <ul>
-            <li>Format HTML</li>
-            <li>Minify HTML</li>
-            <li>Copy formatted HTML</li>
-            <li>Runs directly in your browser</li>
-        </ul>
-
-    </section>
+<div class="editor-panel">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot"></span>Formatted Output</span>
+<div class="editor-actions">
+<button class="btn btn-ghost btn-sm" id="copyBtn" title="Copy">&#128203;</button>
+<button class="btn btn-ghost btn-sm" id="downloadBtn" title="Download">&#128229;</button>
+</div>
+</div>
+<pre><code class="language-html" id="outputCode"><span class="token comment">&lt;!-- Formatted HTML will appear here --&gt;</span></code></pre>
+</div>
 
 </div>
 
-</section>
+<div class="action-bar">
+<button class="btn btn-primary" id="formatBtn">&#9998; Format HTML</button>
+</div>
+
+<div id="messageArea"></div>
+</div>
 </main>
-<nav class="tool-navigation"><div class="nav-prev"><a href="/xml-validator" class="nav-link">← XML Validator</a></div><a href="/" class="nav-home">All Tools</a><div class="nav-next"><a href="/css-formatter" class="nav-link">CSS Formatter →</a></div></nav>
 
-
-<footer class="footer">
-    <div class="container">
-        <p>&copy; 2026 DevTools. All rights reserved.</p>
-    </div>
-</footer>
+<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally in your browser.</p></div></footer>
 
 <script src="/public/assets/js/html-formatter.js"></script>
-
 <script src="/public/assets/js/theme.js"></script>
-<script src="/public/assets/js/shortcuts.js"></script>
-<script src="/public/assets/js/download.js"></script>
 </body>
 </html>

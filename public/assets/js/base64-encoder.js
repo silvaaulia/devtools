@@ -1,66 +1,86 @@
-const input = document.getElementById("input");
-const output = document.getElementById("output");
-const convertButton = document.getElementById("convertButton");
-const clearButton = document.getElementById("clearButton");
-const copyButton = document.getElementById("copyButton");
-const errorMessage = document.getElementById("errorMessage");
+// Elements
+const input = document.getElementById('baseInput');
+const outputCode = document.getElementById('outputCode');
+const messageArea = document.getElementById('messageArea');
+const formatBtn = document.getElementById('formatBtn');
+const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
 
-function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
+// Show message
+function showMessage(text, type = 'success') {
+    messageArea.innerHTML = `
+        <div class="alert alert-${type}">
+            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
+            <span>${text}</span>
+        </div>
+    `;
+    setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
-function clearError() {
-    errorMessage.textContent = "";
-    errorMessage.style.display = "none";
-}
+// Clear message
+function clearMessage() { messageArea.innerHTML = ''; }
 
-convertButton.addEventListener("click", function () {
-
-    clearError();
-
+// Encode to Base64
+function encodeBase64() {
+    clearMessage();
     if (!input.value) {
-        showError("Please enter text.");
+        showMessage('Please enter text.', 'error');
         return;
     }
-
     try {
-
         const bytes = new TextEncoder().encode(input.value);
-
-        let binary = "";
-
-        bytes.forEach(byte => {
-            binary += String.fromCharCode(byte);
-        });
-
-        output.value = btoa(binary);
-
+        let binary = '';
+        bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+        outputCode.textContent = btoa(binary);
+        showMessage('Text encoded to Base64!', 'success');
     } catch (error) {
-        showError("Unable to encode text.");
+        showMessage('Unable to encode text.', 'error');
     }
+}
 
-});
+// Clear all
+function clearAll() {
+    input.value = '';
+    outputCode.textContent = '<!-- Encoded Base64 will appear here -->';
+    clearMessage();
+}
 
-clearButton.addEventListener("click", function () {
-    input.value = "";
-    output.value = "";
-    clearError();
-});
-
-copyButton.addEventListener("click", async function () {
-
-    if (!output.value) {
-        showError("Nothing to copy.");
+// Copy to clipboard
+async function copyToClipboard() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to copy', 'error');
         return;
     }
+    try {
+        await navigator.clipboard.writeText(outputCode.textContent);
+        showMessage('Copied to clipboard!', 'success');
+    } catch {
+        showMessage('Failed to copy', 'error');
+    }
+}
 
-    await navigator.clipboard.writeText(output.value);
+// Download
+function downloadResult() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to download', 'error');
+        return;
+    }
+    const blob = new Blob([outputCode.textContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'encoded.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    showMessage('Download started!', 'success');
+}
 
-    copyButton.textContent = "Copied!";
+// Event listeners
+formatBtn.addEventListener('click', encodeBase64);
+clearBtn.addEventListener('click', clearAll);
+copyBtn.addEventListener('click', copyToClipboard);
+downloadBtn.addEventListener('click', downloadResult);
 
-    setTimeout(() => {
-        copyButton.textContent = "Copy";
-    }, 1500);
-
-});
+// Keyboard shortcuts
+input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') encodeBase64(); });

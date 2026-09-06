@@ -1,149 +1,145 @@
-const input = document.getElementById("input");
-const output = document.getElementById("output");
+// Elements
+const input = document.getElementById('csvInput');
+const outputCode = document.getElementById('outputCode');
+const messageArea = document.getElementById('messageArea');
+const formatBtn = document.getElementById('formatBtn');
+const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const fileInput = document.getElementById('fileInput');
 
-const convertButton = document.getElementById("convertButton");
-const clearButton = document.getElementById("clearButton");
-const copyButton = document.getElementById("copyButton");
-const errorMessage = document.getElementById("errorMessage");
-
-
-function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
+// Show message
+function showMessage(text, type = 'success') {
+    messageArea.innerHTML = `
+        <div class="alert alert-${type}">
+            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
+            <span>${text}</span>
+        </div>
+    `;
+    setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
+// Clear message
+function clearMessage() { messageArea.innerHTML = ''; }
 
-function clearError() {
-    errorMessage.textContent = "";
-    errorMessage.style.display = "none";
-}
-
-
+// Parse CSV
 function parseCSV(text) {
-
     const rows = [];
     let row = [];
-    let value = "";
+    let value = '';
     let insideQuotes = false;
-
     for (let i = 0; i < text.length; i++) {
-
         const char = text[i];
         const next = text[i + 1];
-
         if (char === '"' && insideQuotes && next === '"') {
             value += '"';
             i++;
             continue;
         }
-
         if (char === '"') {
             insideQuotes = !insideQuotes;
             continue;
         }
-
-        if (char === "," && !insideQuotes) {
+        if (char === ',' && !insideQuotes) {
             row.push(value.trim());
-            value = "";
+            value = '';
             continue;
         }
-
-        if ((char === "\n" || char === "\r") && !insideQuotes) {
-
-            if (char === "\r" && next === "\n") {
-                i++;
-            }
-
+        if ((char === '\n' || char === '\r') && !insideQuotes) {
+            if (char === '\r' && next === '\n') i++;
             row.push(value.trim());
             rows.push(row);
-
             row = [];
-            value = "";
-
+            value = '';
             continue;
         }
-
         value += char;
     }
-
     row.push(value.trim());
-
-    if (row.length > 1 || row[0] !== "") {
-        rows.push(row);
-    }
-
+    if (row.length > 1 || row[0] !== '') rows.push(row);
     return rows;
 }
 
-
-function convertCSV() {
-
-    clearError();
-
+// Convert CSV to JSON
+function convertCSVToJSON() {
+    clearMessage();
     try {
-
         const text = input.value.trim();
-
         if (!text) {
-            throw new Error("Please enter CSV data.");
+            showMessage('Please enter CSV data.', 'error');
+            return;
         }
-
         const rows = parseCSV(text);
-
         if (rows.length < 2) {
-            throw new Error("CSV must contain a header and data.");
+            showMessage('CSV must contain a header and data.', 'error');
+            return;
         }
-
         const headers = rows[0];
-
         const result = rows.slice(1).map(row => {
-
             const object = {};
-
             headers.forEach((header, index) => {
-                object[header] = row[index] ?? "";
+                object[header] = row[index] ?? '';
             });
-
             return object;
-
         });
-
-        output.value = JSON.stringify(result, null, 2);
-
+        outputCode.textContent = JSON.stringify(result, null, 2);
+        showMessage('Converted to JSON!', 'success');
     } catch (error) {
-
-        showError(error.message);
-
+        showMessage(error.message, 'error');
     }
 }
 
+// Clear all
+function clearAll() {
+    input.value = '';
+    outputCode.textContent = '<span class="token comment"><!-- JSON output will appear here --></span>';
+    clearMessage();
+}
 
-convertButton.addEventListener("click", convertCSV);
-
-
-clearButton.addEventListener("click", function() {
-
-    input.value = "";
-    output.value = "";
-
-    clearError();
-
-});
-
-
-copyButton.addEventListener("click", async function() {
-
-    if (!output.value) {
-        showError("Nothing to copy.");
+// Copy to clipboard
+async function copyToClipboard() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to copy', 'error');
         return;
     }
+    try {
+        await navigator.clipboard.writeText(outputCode.textContent);
+        showMessage('Copied to clipboard!', 'success');
+    } catch {
+        showMessage('Failed to copy', 'error');
+    }
+}
 
-    await navigator.clipboard.writeText(output.value);
+// Download JSON
+function downloadJSON() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
+        showMessage('Nothing to download', 'error');
+        return;
+    }
+    const blob = new Blob([outputCode.textContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'converted.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showMessage('Download started!', 'success');
+}
 
-    copyButton.textContent = "Copied!";
+// Load file
+function loadFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => { input.value = e.target.result; convertCSVToJSON(); };
+    reader.readAsText(file);
+}
 
-    setTimeout(() => {
-        copyButton.textContent = "Copy";
-    }, 1500);
+// Event listeners
+formatBtn.addEventListener('click', convertCSVToJSON);
+clearBtn.addEventListener('click', clearAll);
+copyBtn.addEventListener('click', copyToClipboard);
+downloadBtn.addEventListener('click', downloadJSON);
+fileInput.addEventListener('change', (e) => loadFile(e.target.files[0]));
 
-});
+// Keyboard shortcuts
+input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') convertCSVToJSON(); });

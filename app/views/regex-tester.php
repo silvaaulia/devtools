@@ -1,156 +1,125 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Regex Tester - Test Regular Expressions Online</title>
-
-<meta name="description" content="Test regular expressions online with matches, indexes, flags and error detection.">
-
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Regex Tester - Test Regular Expressions Online">
-<meta property="og:description" content="Test regular expressions online with matches, indexes, flags and error detection.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-
-<link rel="stylesheet" href="/public/assets/css/style.css">
-
+<meta name="description" content="Test regular expressions online. See matches, groups, and replacements.">
 <meta name="robots" content="index, follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
-
 <body>
 
-<header class="site-header">
-<div class="container navbar">
-<a href="/" class="logo">DevTools</a>
-<nav class="main-nav">
-<a href="/">Home</a>
-<a href="/#tools">Tools</a>
-<a href="/#converters">Converters</a>
-<a href="/regex-tester">Regex Tester</a>
+<header class="header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
+<nav class="nav-categories">
+<button class="nav-link" onclick="location.href='/'">All Tools</button>
+<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
+<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
+<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
+<button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
 </nav>
-<button id="themeToggle" class="theme-button" title="Toggle dark mode" aria-label="Toggle dark mode">&#9790;</button>
+<div class="header-actions">
+<button class="icon-btn" id="themeToggle" title="Toggle theme"><span id="themeIcon">&#9790;</span></button>
+</div>
 </div>
 </header>
 
 <main class="tool-page">
-
-<section class="tool-page">
-
 <div class="container">
 
-<h1>Regex Tester</h1>
-
-<p class="tool-description">
-Test and debug regular expressions directly in your browser.
-</p>
-
-<div class="tool-wrapper">
-
-<div class="tool-card-panel">
-
-<div class="tool-card-panel-header">
-<strong>Regular Expression</strong>
+<div class="tool-header">
+<div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / Regex</div>
+<h1 class="tool-title">Regex Tester</h1>
+<p class="tool-desc">Test regular expressions and see matches, groups, and replacements in real time.</p>
 </div>
 
-<input
-type="text"
-id="regexInput"
-placeholder="Example: ^[A-Za-z]+$"
->
+<div class="editor-container">
 
+<div class="editor-panel">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot input"></span>Pattern</span>
+<div class="editor-actions">
+<label class="btn btn-ghost btn-sm" title="Upload file">&#128194;<input type="file" id="fileInput" accept=".txt,.log,.csv,.json,.xml,.html,.md" style="display:none"></label>
+<button class="btn btn-ghost btn-sm" id="sampleBtn" title="Sample data">&#127916;</button>
+<button class="btn btn-ghost btn-sm" id="clearBtn" title="Clear">&#10005;</button>
+</div>
+</div>
+<textarea class="editor-textarea" id="regexInput" placeholder="^\w+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,}$"></textarea>
+<div class="editor-flags">
+<label class="flag-option">
+<input type="checkbox" id="flagG" checked>
+<code>g</code> Global
+</label>
+<label class="flag-option">
+<input type="checkbox" id="flagI">
+<code>i</code> Case-insensitive
+</label>
+<label class="flag-option">
+<input type="checkbox" id="flagM">
+<code>m</code> Multiline
+</label>
+<label class="flag-option">
+<input type="checkbox" id="flagS">
+<code>s</code> Dotall
+</label>
+</div>
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot"></span>Test String</span>
+<div class="editor-actions">
+<button class="btn btn-ghost btn-sm" id="loadFileBtn" title="Load file">&#128194;</button>
+<button class="btn btn-ghost btn-sm" id="clearTextBtn" title="Clear">&#10005;</button>
+</div>
+</div>
+<textarea class="editor-textarea" id="textInput" placeholder="test@example.com&#10;admin@site.org&#10;hello@world.net&#10;invalid-email&#10;user.name@domain.co.uk"></textarea>
 </div>
 
-<div class="tool-card-panel">
-
-<div class="tool-card-panel-header">
-<strong>Flags</strong>
+<div class="editor-panel">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot"></span>Matches</span>
+<div class="editor-actions">
+<button class="btn btn-ghost btn-sm" id="copyBtn" title="Copy">&#128203;</button>
+<button class="btn btn-ghost btn-sm" id="downloadBtn" title="Download">&#128229;</button>
 </div>
-
-<input
-type="text"
-id="flagsInput"
-placeholder="gim"
-value="g"
->
-
 </div>
-
-<div class="tool-card-panel">
-
-<div class="tool-card-panel-header">
-<strong>Test Text</strong>
-</div>
-
-<textarea
-class="tool-textarea" id="textInput"
-placeholder="Enter text to test..."
-></textarea>
-
-</div>
-
-<div class="tool-actions">
-
-<button
-id="testButton"
-class="tool-btn tool-btn-primary">
-Test Regex
-</button>
-
-<button
-id="clearButton"
-class="tool-btn tool-btn-secondary">
-Clear
-</button>
-
-</div>
-
-<div
-id="errorMessage"
-class="tool-error">
-</div>
-
-<div class="tool-card-panel">
-
-<div class="tool-card-panel-header">
-<strong>Result</strong>
-</div>
-
-<div id="result">
-
-<p>No test performed.</p>
-
+<pre><code class="language-js" id="outputCode">Matches will appear here</code></pre>
 </div>
 
 </div>
 
+<div class="action-bar">
+<button class="btn btn-primary" id="testBtn">&#9898; Test Regex</button>
+<button class="btn btn-secondary" id="replaceBtn">&#128257; Replace</button>
+<button class="btn btn-secondary" id="clearAllBtn">&#128465; Clear All</button>
 </div>
 
+<div class="editor-panel" id="replacePanel" style="display:none;">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot input"></span>Replace With</span>
+</div>
+<textarea class="editor-textarea" id="replaceInput" placeholder="$1" style="min-height:100px;"></textarea>
+<div class="editor-header" style="border-top:1px solid var(--border-color);">
+<span class="editor-label"><span class="editor-label-dot"></span>Replacement Result</span>
+<div class="editor-actions">
+<button class="btn btn-ghost btn-sm" id="copyReplaceBtn" title="Copy">&#128203;</button>
+</div>
+</div>
+<pre><code class="language-js" id="replaceOutput" style="min-height:100px; padding:16px; white-space:pre-wrap; overflow:auto; background:var(--bg-editor);">Replacement result will appear here</code></pre>
 </div>
 
-</section>
+<div id="messageArea"></div>
+
+</div>
 </main>
-<nav class="tool-navigation"><div class="nav-prev"><a href="/xml-escape" class="nav-link">← XML Escape</a></div><a href="/" class="nav-home">All Tools</a><div class="nav-next"><a href="/timestamp-converter" class="nav-link">Timestamp Converter →</a></div></nav>
 
-
-<footer class="footer">
-
-<div class="container">
-
-<p>&copy; 2026 DevTools. All rights reserved.</p>
-
-</div>
-
-</footer>
+<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally in your browser.</p></div></footer>
 
 <script src="/public/assets/js/regex-tester.js"></script>
-
 <script src="/public/assets/js/theme.js"></script>
-<script src="/public/assets/js/shortcuts.js"></script>
-<script src="/public/assets/js/download.js"></script>
 </body>
-
 </html>
