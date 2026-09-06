@@ -6,6 +6,7 @@ const outputCode = document.getElementById('outputCode');
 const replaceOutput = document.getElementById('replaceOutput');
 const messageArea = document.getElementById('messageArea');
 const replacePanel = document.getElementById('replacePanel');
+const dropZone = document.getElementById('dropZone');
 
 // Buttons
 const testBtn = document.getElementById('testBtn');
@@ -18,7 +19,6 @@ const copyReplaceBtn = document.getElementById('copyReplaceBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const sampleBtn = document.getElementById('sampleBtn');
 const fileInput = document.getElementById('fileInput');
-const loadFileBtn = document.getElementById('loadFileBtn');
 
 // Flags
 const flagG = document.getElementById('flagG');
@@ -26,9 +26,12 @@ const flagI = document.getElementById('flagI');
 const flagM = document.getElementById('flagM');
 const flagS = document.getElementById('flagS');
 
-// Sample data
-const sampleData = {
-    emails: `john.doe@example.com
+// Sample data for regex tester
+const sampleData = [
+    {
+        name: 'Email Addresses',
+        pattern: '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b',
+        text: `john.doe@example.com
 admin@company.org
 support@helpdesk.net
 user123@gmail.com
@@ -36,36 +39,36 @@ invalid-email-address
 test@sub.domain.co.uk
 missing@domain
 @nodomain.com
-contact@site.io`,
-
-    phones: `+1-555-123-4567
+contact@site.io`
+    },
+    {
+        name: 'Phone Numbers',
+        pattern: '\\+?\\d?[\\s.-]?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}',
+        text: `+1-555-123-4567
 (555) 987-6543
 555.123.4567
 555-123-4567
 +44 20 7946 0958
 123-456-7890
 invalid-phone-number
-+1 (555) 123-4567`,
-
-    urls: `https://www.example.com
++1 (555) 123-4567`
+    },
+    {
+        name: 'URLs',
+        pattern: 'https?://[^\\s]+',
+        text: `https://www.example.com
 http://sub.domain.org/path?query=value
 ftp://files.server.net
 https://github.com/user/repo
 www.google.com
 not a url
 https://api.service.io/v2/users/123
-mailto:test@email.com`,
-
-    dates: `2024-01-15
-12/25/2023
-January 15, 2024
-15-01-2024
-2024/01/15
-01/15/24
-invalid date
-2024-13-45`,
-
-    ips: `192.168.1.1
+mailto:test@email.com`
+    },
+    {
+        name: 'IPv4 Addresses',
+        pattern: '\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b',
+        text: `192.168.1.1
 10.0.0.255
 172.16.0.1
 255.255.255.0
@@ -73,9 +76,20 @@ invalid date
 192.168.1
 invalid-ip-address
 8.8.8.8`
-};
-
-let currentSample = 'emails';
+    },
+    {
+        name: 'Dates (YYYY-MM-DD)',
+        pattern: '\\d{4}-\\d{2}-\\d{2}',
+        text: `2024-01-15
+2023-12-25
+1999-06-30
+invalid date
+2024-13-45
+2024/01/15
+01/15/2024`
+    }
+];
+let currentSampleIndex = 0;
 
 // Build flags string from checkboxes
 function getFlags() {
@@ -215,26 +229,12 @@ function toggleReplace() {
 
 // Load sample data
 function loadSample() {
-    const samples = ['emails', 'phones', 'urls', 'dates', 'ips'];
-    const currentIndex = samples.indexOf(currentSample);
-    currentSample = samples[(currentIndex + 1) % samples.length];
-
-    textInput.value = sampleData[currentSample];
-    regexInput.value = getSamplePattern(currentSample);
-    showMessage(`Loaded sample: ${currentSample}`, 'success');
+    const sample = sampleData[currentSampleIndex];
+    regexInput.value = sample.pattern;
+    textInput.value = sample.text;
+    currentSampleIndex = (currentSampleIndex + 1) % sampleData.length;
+    showMessage(`Sample ${currentSampleIndex + 1}/${sampleData.length}: ${sample.name}`, 'success');
     testRegex();
-}
-
-// Get sample pattern
-function getSamplePattern(type) {
-    const patterns = {
-        emails: '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b',
-        phones: '\\+?\\d?[\\s.-]?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}',
-        urls: 'https?://[^\\s]+',
-        dates: '\\d{4}-\\d{2}-\\d{2}',
-        ips: '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}'
-    };
-    return patterns[type] || '';
 }
 
 // Clear all
@@ -243,7 +243,7 @@ function clearAll() {
     textInput.value = '';
     replaceInput.value = '';
     outputCode.textContent = 'Matches will appear here';
-    replaceOutput.textContent = 'Replacement result will appear here';
+    replaceOutput.textContent = 'Result will appear here';
     messageArea.innerHTML = '';
 }
 
@@ -251,18 +251,18 @@ function clearAll() {
 function clearText() {
     textInput.value = '';
     outputCode.textContent = 'Matches will appear here';
-    replaceOutput.textContent = 'Replacement result will appear here';
+    replaceOutput.textContent = 'Result will appear here';
 }
 
 // Copy to clipboard
-async function copyToClipboard(text, target) {
+async function copyToClipboard(text) {
     if (!text || text.includes('will appear') || text.includes('Enter')) {
         showMessage('Nothing to copy', 'error');
         return;
     }
     try {
         await navigator.clipboard.writeText(text);
-        showMessage(`Copied to clipboard!`, 'success');
+        showMessage('Copied to clipboard!', 'success');
     } catch {
         showMessage('Failed to copy', 'error');
     }
@@ -302,20 +302,40 @@ function loadFile(file) {
     reader.readAsText(file);
 }
 
+// Drag & Drop
+if (dropZone) {
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) loadFile(file);
+    });
+}
+
 // Event listeners
 testBtn.addEventListener('click', testRegex);
 replaceBtn.addEventListener('click', toggleReplace);
 clearAllBtn.addEventListener('click', clearAll);
 clearBtn.addEventListener('click', () => { regexInput.value = ''; testRegex(); });
 clearTextBtn.addEventListener('click', clearText);
-copyBtn.addEventListener('click', () => copyToClipboard(outputCode.textContent, 'output'));
-copyReplaceBtn.addEventListener('click', () => copyToClipboard(replaceOutput.textContent, 'replace'));
+copyBtn.addEventListener('click', () => copyToClipboard(outputCode.textContent));
+copyReplaceBtn.addEventListener('click', () => copyToClipboard(replaceOutput.textContent));
 downloadBtn.addEventListener('click', downloadResults);
 sampleBtn.addEventListener('click', loadSample);
 fileInput.addEventListener('change', (e) => {
     if (e.target.files[0]) loadFile(e.target.files[0]);
 });
-loadFileBtn.addEventListener('click', () => fileInput.click());
 
 // Real-time testing
 regexInput.addEventListener('input', testRegex);
@@ -327,5 +347,15 @@ replaceInput.addEventListener('input', doReplace);
 
 // Keyboard shortcuts
 textInput.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'Enter') testRegex();
+    if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        testRegex();
+    }
+});
+
+regexInput.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        testRegex();
+    }
 });

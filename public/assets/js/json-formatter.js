@@ -6,23 +6,26 @@ const formatBtn = document.getElementById('formatBtn');
 const minifyBtn = document.getElementById('minifyBtn');
 const validateBtn = document.getElementById('validateBtn');
 const clearBtn = document.getElementById('clearBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
 const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const sampleBtn = document.getElementById('sampleBtn');
 const fileInput = document.getElementById('fileInput');
+const dropZone = document.getElementById('dropZone');
+
+// Sample data
+const samples = [
+    '{"name": "John Doe", "email": "john@example.com", "age": 30, "active": true}',
+    '{"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}], "count": 2}',
+    '{"nested": {"deep": {"value": "found"}},"array": [1, 2, 3]}'
+];
 
 // Show message
 function showMessage(text, type = 'success') {
-    messageArea.innerHTML = `
-        <div class="alert alert-${type}">
-            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
-            <span>${text}</span>
-        </div>
-    `;
+    messageArea.className = `alert alert-${type}`;
+    messageArea.innerHTML = text;
     setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
-
-// Clear message
-function clearMessage() { messageArea.innerHTML = ''; }
 
 // Get parsed JSON
 function getJSON() {
@@ -33,7 +36,6 @@ function getJSON() {
 
 // Format JSON (beautify)
 function formatJSON() {
-    clearMessage();
     try {
         const data = getJSON();
         const formatted = JSON.stringify(data, null, 2);
@@ -46,7 +48,6 @@ function formatJSON() {
 
 // Minify JSON
 function minifyJSON() {
-    clearMessage();
     try {
         const data = getJSON();
         const minified = JSON.stringify(data);
@@ -59,7 +60,6 @@ function minifyJSON() {
 
 // Validate JSON
 function validateJSON() {
-    clearMessage();
     try {
         const data = getJSON();
         showMessage('Valid JSON! Object with ' + Object.keys(data).length + ' keys.', 'success');
@@ -68,11 +68,18 @@ function validateJSON() {
     }
 }
 
+// Load sample
+let sampleIndex = 0;
+function loadSample() {
+    input.value = samples[sampleIndex];
+    sampleIndex = (sampleIndex + 1) % samples.length;
+    formatJSON();
+}
+
 // Clear all
 function clearAll() {
     input.value = '';
-    outputCode.textContent = '<span class="token comment"><!-- Formatted JSON will appear here --></span>';
-    clearMessage();
+    outputCode.textContent = '<!-- Formatted JSON will appear here -->';
 }
 
 // Copy to clipboard
@@ -108,17 +115,32 @@ function downloadJSON() {
 // Load file
 function loadFile(file) {
     if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.json')) {
-        showMessage('Please upload a .json file', 'error');
-        return;
-    }
     const reader = new FileReader();
     reader.onload = (e) => {
         input.value = e.target.result;
+        showMessage(`Loaded: ${file.name}`, 'success');
         formatJSON();
     };
     reader.onerror = () => showMessage('Failed to read file', 'error');
     reader.readAsText(file);
+}
+
+// Drag & Drop
+if (dropZone) {
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) loadFile(file);
+    });
 }
 
 // Event listeners
@@ -126,14 +148,13 @@ formatBtn.addEventListener('click', formatJSON);
 minifyBtn.addEventListener('click', minifyJSON);
 validateBtn.addEventListener('click', validateJSON);
 clearBtn.addEventListener('click', clearAll);
+clearAllBtn.addEventListener('click', clearAll);
 copyBtn.addEventListener('click', copyToClipboard);
 downloadBtn.addEventListener('click', downloadJSON);
+sampleBtn.addEventListener('click', loadSample);
 fileInput.addEventListener('change', (e) => loadFile(e.target.files[0]));
 
-// Drag and drop
-input.addEventListener('dragover', (e) => { e.preventDefault(); input.classList.add('dragging'); });
-input.addEventListener('dragleave', () => input.classList.remove('dragging'));
-input.addEventListener('drop', (e) => { e.preventDefault(); input.classList.remove('dragging'); loadFile(e.dataTransfer.files[0]); });
-
 // Keyboard shortcuts
-input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') formatJSON(); });
+input.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') formatJSON();
+});
