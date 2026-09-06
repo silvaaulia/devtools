@@ -14,6 +14,12 @@
 </head>
 <body>
 
+<!-- Background Decorations -->
+<div class="bg-decoration">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+</div>
+
 <header class="header">
 <div class="container header-inner">
 <a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>

@@ -14,6 +14,13 @@
 </head>
 <body>
 
+<!-- Background Decorations -->
+<div class="bg-decoration">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+</div>
+
 <header class="header">
 <div class="container header-inner">
 <a href="/" class="logo">
@@ -43,31 +50,46 @@
 </header>
 
 <section class="hero">
-<div class="container hero-content">
+<div class="container">
+<div class="hero-badge">
+<span class="hero-badge-icon">&#10024;</span>
+<span>30+ Free Developer Tools</span>
+</div>
 <h1 class="hero-title">Free <span>Developer Tools</span></h1>
-<p class="hero-subtitle">Format, validate, convert, encode, and test your code instantly. No signup required. All tools run locally in your browser.</p>
+<p class="hero-subtitle">Format, validate, convert, encode, and test your code instantly. No signup required. All tools run locally in your browser with complete privacy.</p>
 <div class="search-box">
 <span class="search-icon">&#128269;</span>
-<input type="text" class="search-input" id="searchInput" placeholder="Search 30+ dev tools..." autocomplete="off">
+<input type="text" class="search-input" id="searchInput" placeholder="Search tools (e.g., JSON, Base64, Regex)..." autocomplete="off">
 </div>
-<div class="hero-stats">
-<div class="hero-stat">
-<div class="hero-stat-value">30+</div>
-<div class="hero-stat-label">Free Tools</div>
+
+<div class="features">
+<div class="feature-card">
+<div class="feature-icon speed">&#9889;</div>
+<div class="feature-title">Lightning Fast</div>
+<div class="feature-desc">Process data instantly in your browser with no server delays</div>
 </div>
-<div class="hero-stat">
-<div class="hero-stat-value">100%</div>
-<div class="hero-stat-label">Browser Based</div>
+<div class="feature-card">
+<div class="feature-icon lock">&#128274;</div>
+<div class="feature-title">100% Private</div>
+<div class="feature-desc">Your data never leaves your browser. Complete privacy guaranteed.</div>
 </div>
-<div class="hero-stat">
-<div class="hero-stat-value">0</div>
-<div class="hero-stat-label">Data Stored</div>
+<div class="feature-card">
+<div class="feature-icon cloud">&#127760;</div>
+<div class="feature-title">No Signup</div>
+<div class="feature-desc">Start using immediately. No account or installation needed.</div>
 </div>
 </div>
 </div>
 </section>
 
 <main class="container tools-section">
+<div class="section-header">
+<h2 class="section-title">
+<span class="section-title-icon">&#128187;</span>
+All Tools
+</h2>
+<span class="section-badge">30+ Tools Available</span>
+</div>
 <div class="tools-grid" id="toolsGrid"></div>
 </main>
 

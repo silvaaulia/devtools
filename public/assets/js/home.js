@@ -1,4 +1,4 @@
-// Tool definitions
+// Tool definitions with icons
 const tools = [
     // Formatters
     { name: 'JSON Formatter', url: '/json-formatter', category: 'formatters', desc: 'Format and beautify JSON data', icon: '&#128195;' },
@@ -54,6 +54,7 @@ function renderTools() {
                 <h3 class="tool-card-title">${tool.name}</h3>
                 <p class="tool-card-desc">${tool.desc}</p>
             </div>
+            <div class="tool-card-arrow">&#8594;</div>
         `;
         grid.appendChild(card);
     });
