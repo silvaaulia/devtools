@@ -2,8 +2,8 @@
 const tools = [
     // Formatters
     { name: 'JSON Formatter', url: '/json-formatter', category: 'formatters', desc: 'Format and beautify JSON data', icon: '{ }' },
-    { name: 'XML Formatter', url: '/xml-formatter', category: 'formatters', desc: 'Format and beautify XML documents', icon: '</>' },
-    { name: 'HTML Formatter', url: '/html-formatter', category: 'formatters', desc: 'Format and beautify HTML code', icon: '<>' },
+    { name: 'XML Formatter', url: '/xml-formatter', category: 'formatters', desc: 'Format and beautify XML documents', icon: '&lt;/&gt;' },
+    { name: 'HTML Formatter', url: '/html-formatter', category: 'formatters', desc: 'Format and beautify HTML code', icon: '&lt;&gt;' },
     { name: 'CSS Formatter', url: '/css-formatter', category: 'formatters', desc: 'Format and beautify CSS stylesheets', icon: '#' },
     { name: 'SQL Formatter', url: '/sql-formatter', category: 'formatters', desc: 'Format and beautify SQL queries', icon: 'DB' },
 
@@ -25,8 +25,8 @@ const tools = [
     { name: 'Base64 Decoder', url: '/base64-decoder', category: 'encoders', desc: 'Decode Base64 to text', icon: 'Aa' },
     { name: 'URL Encoder', url: '/url-encoder', category: 'encoders', desc: 'Encode URLs for safe transmission', icon: 'http' },
     { name: 'URL Decoder', url: '/url-decoder', category: 'encoders', desc: 'Decode URL-encoded strings', icon: 'http' },
-    { name: 'HTML Escape', url: '/html-escape', category: 'encoders', desc: 'Escape HTML special characters', icon: '<>' },
-    { name: 'XML Escape', url: '/xml-escape', category: 'encoders', desc: 'Escape XML special characters', icon: '</>' },
+    { name: 'HTML Escape', url: '/html-escape', category: 'encoders', desc: 'Escape HTML special characters', icon: '&lt;&gt;' },
+    { name: 'XML Escape', url: '/xml-escape', category: 'encoders', desc: 'Escape XML special characters', icon: '&lt;/&gt;' },
 
     // Validators
     { name: 'JSON Validator', url: '/json-validator', category: 'validators', desc: 'Validate JSON syntax', icon: 'OK' },
