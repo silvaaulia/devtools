@@ -29,6 +29,7 @@
 <div class="header-nav">
 <button class="nav-link active" data-category="all">All Tools</button>
 <button class="nav-link" data-category="formatters">Formatters</button>
+<button class="nav-link" data-category="minifiers">Minifiers</button>
 <button class="nav-link" data-category="converters">Converters</button>
 <button class="nav-link" data-category="encoders">Encoders</button>
 <button class="nav-link" data-category="validators">Validators</button>
@@ -42,6 +43,7 @@
 <nav class="mobile-nav" id="mobileNav">
 <button class="nav-link active" data-category="all">All Tools</button>
 <button class="nav-link" data-category="formatters">Formatters</button>
+<button class="nav-link" data-category="minifiers">Minifiers</button>
 <button class="nav-link" data-category="converters">Converters</button>
 <button class="nav-link" data-category="encoders">Encoders</button>
 <button class="nav-link" data-category="validators">Validators</button>
