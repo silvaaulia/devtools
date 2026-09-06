@@ -25,7 +25,6 @@
 <button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
 </div>
 <div class="header-actions">
-<a href="https://github.com/silvaaulia/devtools" target="_blank" class="icon-btn" title="GitHub">&#128187;</a>
 <button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
 <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </div>
