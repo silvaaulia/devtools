@@ -44,14 +44,14 @@
 <div class="tool-header">
 <div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / Regex</div>
 <h1 class="tool-title">Regex Tester</h1>
-<p class="tool-desc">Test regular expressions and see matches, groups, and replacements.</p>
+<p class="tool-desc">Test regular expressions and see matches, groups, and replacements in real time.</p>
 </div>
 
 <div class="editor-container">
 
 <div class="editor-panel">
 <div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot input"></span>Pattern</span>
+<span class="editor-label"><span class="editor-label-dot"></span>Pattern</span>
 <div class="editor-actions">
 <label class="btn btn-ghost btn-sm" title="Upload file">&#128194;<input type="file" id="fileInput" accept=".txt,.log,.csv,.json,.xml,.html,.md" style="display:none"></label>
 <button class="btn btn-ghost btn-sm" id="sampleBtn" title="Sample data">&#127916;</button>
@@ -77,7 +77,7 @@
 
 <div class="editor-panel">
 <div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot"></span>Matches</span>
+<span class="editor-label"><span class="editor-label-dot output"></span>Matches</span>
 <div class="editor-actions">
 <button class="btn btn-ghost btn-sm" id="copyBtn" title="Copy">&#128203;</button>
 <button class="btn btn-ghost btn-sm" id="downloadBtn" title="Download">&#128229;</button>
@@ -95,13 +95,13 @@
 </div>
 
 <div class="editor-panel" id="replacePanel" style="display:none;">
-<div class="editor-header"><span class="editor-label"><span class="editor-label-dot input"></span>Replace With</span></div>
-<textarea class="editor-textarea" id="replaceInput" placeholder="$1" style="min-height:80px;"></textarea>
+<div class="editor-header"><span class="editor-label"><span class="editor-label-dot"></span>Replace With</span></div>
+<textarea class="editor-textarea" id="replaceInput" placeholder="$1" style="min-height:100px;"></textarea>
 <div class="editor-header" style="border-top:1px solid var(--border-color);">
-<span class="editor-label"><span class="editor-label-dot"></span>Result</span>
+<span class="editor-label"><span class="editor-label-dot output"></span>Result</span>
 <div class="editor-actions"><button class="btn btn-ghost btn-sm" id="copyReplaceBtn" title="Copy">&#128203;</button></div>
 </div>
-<pre><code class="language-js" id="replaceOutput" style="min-height:80px; padding:12px; white-space:pre-wrap; background:var(--bg-editor);">Result will appear here</code></pre>
+<pre><code class="language-js" id="replaceOutput" style="min-height:100px; padding:16px; white-space:pre-wrap; background:var(--bg-editor);">Result will appear here</code></pre>
 </div>
 
 <div id="messageArea"></div>

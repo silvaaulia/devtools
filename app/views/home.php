@@ -43,17 +43,31 @@
 </header>
 
 <section class="hero">
-<div class="container">
+<div class="container hero-content">
 <h1 class="hero-title">Free <span>Developer Tools</span></h1>
-<p class="hero-subtitle">Format, validate, convert, encode, and test your code instantly.</p>
+<p class="hero-subtitle">Format, validate, convert, encode, and test your code instantly. No signup required. All tools run locally in your browser.</p>
 <div class="search-box">
 <span class="search-icon">&#128269;</span>
 <input type="text" class="search-input" id="searchInput" placeholder="Search 30+ dev tools..." autocomplete="off">
 </div>
+<div class="hero-stats">
+<div class="hero-stat">
+<div class="hero-stat-value">30+</div>
+<div class="hero-stat-label">Free Tools</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-value">100%</div>
+<div class="hero-stat-label">Browser Based</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-value">0</div>
+<div class="hero-stat-label">Data Stored</div>
+</div>
+</div>
 </div>
 </section>
 
-<main class="container">
+<main class="container tools-section">
 <div class="tools-grid" id="toolsGrid"></div>
 </main>
 
