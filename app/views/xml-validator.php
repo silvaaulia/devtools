@@ -1,97 +1,84 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>XML Validator - Validate XML Online</title>
-    <meta name="description" content="Validate XML structure online and quickly identify XML syntax errors.">
-
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="XML Validator - Validate XML Online">
-<meta property="og:description" content="Validate XML structure online and quickly identify XML syntax errors.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-
-<link rel="stylesheet" href="/public/assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XML Validator - Validate XML Online</title>
+<meta name="description" content="Validate XML documents and check for errors.">
 <meta name="robots" content="index, follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
-
 <body>
-
-<header class="site-header">
-<div class="container navbar">
-<a href="/" class="logo">DevTools</a>
-<nav class="main-nav">
-<a href="/">Home</a>
-<a href="/#tools">Tools</a>
-<a href="/#converters">Converters</a>
-<a href="/xml-validator">Xml Validator</a>
+<div class="bg-decoration"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div></div>
+<header class="header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
+<div class="header-nav">
+<button class="nav-link" onclick="location.href='/'">All Tools</button>
+<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
+<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
+<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
+<button class="nav-link" onclick="location.href='/regex-tester'">Regex</button>
+</div>
+<div class="header-actions">
+<button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
+<button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</div>
+<nav class="mobile-nav" id="mobileNav">
+<button class="nav-link" onclick="location.href='/'">All Tools</button>
+<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
+<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
+<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
+<button class="nav-link" onclick="location.href='/regex-tester'">Regex</button>
 </nav>
-<button id="themeToggle" class="theme-button" title="Toggle dark mode" aria-label="Toggle dark mode">&#9790;</button>
-</div>
 </header>
-
 <main class="tool-page">
-
-<section class="tool-page">
-
 <div class="container">
-
-    <h1>XML Validator</h1>
-
-    <p class="tool-description">
-        Validate XML and detect syntax errors directly in your browser.
-    </p>
-
-    <div class="tool-wrapper">
-
-        <div class="tool-card-panel">
-
-            <div class="tool-card-panel-header">
-                <strong>Input XML</strong>
-            </div>
-
-            <textarea
-                class="tool-textarea" id="xmlInput"
-                placeholder='<users><user>Silva</user></users>'
-            ></textarea>
-
-        </div>
-
-        <div class="tool-actions">
-
-            <button id="validateButton" class="tool-btn tool-btn-primary">
-                Validate XML
-            </button>
-
-            <button id="clearButton" class="tool-btn tool-btn-secondary">
-                Clear
-            </button>
-
-        </div>
-
-        <div id="resultMessage"></div>
-
-    </div>
-
+<div class="tool-header">
+<div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / Validators</div>
+<h1 class="tool-title">XML Validator</h1>
+<p class="tool-desc">Validate XML documents and check for syntax errors.</p>
 </div>
-
-</section>
+<div class="editor-container">
+<div class="editor-panel">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot"></span>XML Input</span>
+<div class="editor-actions">
+<label class="btn btn-ghost btn-sm" data-tooltip="Upload file">&#128194;<input type="file" accept=".xml,.txt" id="fileInput" style="display:none"></label>
+<button class="btn btn-ghost btn-sm" id="sampleBtn" data-tooltip="Load sample">&#127916;</button>
+<button class="btn btn-ghost btn-sm" id="clearBtn" data-tooltip="Clear">&#10005;</button>
+</div>
+</div>
+<textarea class="editor-textarea" id="xmlInput" placeholder="<root><item>Value</item></root>"></textarea>
+<div class="drop-zone" id="dropZone"><div class="drop-zone-icon">&#128194;</div><div class="drop-zone-text"><strong>Drop file</strong> or click to upload</div></div>
+<div class="editor-header"><span class="kbd-hint"><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span></span></div>
+</div>
+<div class="editor-panel">
+<div class="editor-header">
+<span class="editor-label"><span class="editor-label-dot output"></span>Validation Result</span>
+<div class="editor-actions">
+<button class="btn btn-ghost btn-sm" id="copyBtn" data-tooltip="Copy">&#128203;</button>
+</div>
+</div>
+<pre><code id="outputCode"><!-- Validation result will appear here --></code></pre>
+</div>
+</div>
+<div class="action-bar">
+<button class="btn btn-primary" id="validateBtn">&#10004; Validate XML</button>
+<button class="btn btn-secondary" id="formatBtn">&#9998; Format</button>
+<button class="btn btn-secondary" id="clearAllBtn">&#128465; Clear</button>
+</div>
+<div id="messageArea"></div>
+</div>
 </main>
-<nav class="tool-navigation"><div class="nav-prev"><a href="/xml-formatter" class="nav-link">← XML Formatter</a></div><a href="/" class="nav-home">All Tools</a><div class="nav-next"><a href="/html-formatter" class="nav-link">HTML Formatter →</a></div></nav>
-
-
-<footer class="footer">
-    <div class="container">
-        <p>&copy; 2026 DevTools. All rights reserved.</p>
-    </div>
-</footer>
-
+<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally in your browser.</p></div></footer>
 <script src="/public/assets/js/xml-validator.js"></script>
-
 <script src="/public/assets/js/theme.js"></script>
-<script src="/public/assets/js/shortcuts.js"></script>
-<script src="/public/assets/js/download.js"></script>
+<script>document.getElementById('hamburger')?.addEventListener('click', function(){this.classList.toggle('active');document.getElementById('mobileNav')?.classList.toggle('active');});</script>
 </body>
 </html>

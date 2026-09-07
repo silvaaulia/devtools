@@ -1,86 +1,40 @@
 // Elements
-const input = document.getElementById('baseInput');
+const input = document.getElementById('textInput');
 const outputCode = document.getElementById('outputCode');
 const messageArea = document.getElementById('messageArea');
-const formatBtn = document.getElementById('formatBtn');
+const encodeBtn = document.getElementById('encodeBtn');
+const decodeBtn = document.getElementById('decodeBtn');
 const clearBtn = document.getElementById('clearBtn');
-const copyBtn = document.getElementById('copyBtn');
-const downloadBtn = document.getElementById('downloadBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
 
-// Show message
 function showMessage(text, type = 'success') {
-    messageArea.innerHTML = `
-        <div class="alert alert-${type}">
-            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
-            <span>${text}</span>
-        </div>
-    `;
+    messageArea.className = `alert alert-${type}`;
+    messageArea.innerHTML = text;
     setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
-// Clear message
-function clearMessage() { messageArea.innerHTML = ''; }
-
-// Encode to Base64
 function encodeBase64() {
-    clearMessage();
-    if (!input.value) {
-        showMessage('Please enter text.', 'error');
-        return;
-    }
+    const value = input.value.trim();
+    if (!value) { showMessage('Please enter text.', 'error'); return; }
     try {
-        const bytes = new TextEncoder().encode(input.value);
-        let binary = '';
-        bytes.forEach(byte => { binary += String.fromCharCode(byte); });
-        outputCode.textContent = btoa(binary);
-        showMessage('Text encoded to Base64!', 'success');
-    } catch (error) {
-        showMessage('Unable to encode text.', 'error');
-    }
+        outputCode.textContent = btoa(unescape(encodeURIComponent(value)));
+        showMessage('Encoded to Base64!', 'success');
+    } catch { showMessage('Error encoding', 'error'); }
 }
 
-// Clear all
-function clearAll() {
-    input.value = '';
-    outputCode.textContent = '<!-- Encoded Base64 will appear here -->';
-    clearMessage();
-}
-
-// Copy to clipboard
-async function copyToClipboard() {
-    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
-        showMessage('Nothing to copy', 'error');
-        return;
-    }
+function decodeBase64() {
+    const value = input.value.trim();
+    if (!value) { showMessage('Please enter Base64.', 'error'); return; }
     try {
-        await navigator.clipboard.writeText(outputCode.textContent);
-        showMessage('Copied to clipboard!', 'success');
-    } catch {
-        showMessage('Failed to copy', 'error');
-    }
+        outputCode.textContent = decodeURIComponent(escape(atob(value)));
+        showMessage('Decoded from Base64!', 'success');
+    } catch { showMessage('Invalid Base64', 'error'); }
 }
 
-// Download
-function downloadResult() {
-    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
-        showMessage('Nothing to download', 'error');
-        return;
-    }
-    const blob = new Blob([outputCode.textContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'encoded.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-    showMessage('Download started!', 'success');
-}
+function clearAll() { input.value = ''; outputCode.textContent = '<!-- Base64 output will appear here -->'; }
 
-// Event listeners
-formatBtn.addEventListener('click', encodeBase64);
+encodeBtn.addEventListener('click', encodeBase64);
+decodeBtn.addEventListener('click', decodeBase64);
 clearBtn.addEventListener('click', clearAll);
-copyBtn.addEventListener('click', copyToClipboard);
-downloadBtn.addEventListener('click', downloadResult);
-
-// Keyboard shortcuts
+clearAllBtn.addEventListener('click', clearAll);
 input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') encodeBase64(); });

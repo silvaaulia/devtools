@@ -2,121 +2,103 @@
 const input = document.getElementById('xmlInput');
 const outputCode = document.getElementById('outputCode');
 const messageArea = document.getElementById('messageArea');
-const formatBtn = document.getElementById('formatBtn');
+const convertBtn = document.getElementById('convertBtn');
 const clearBtn = document.getElementById('clearBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
 const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const sampleBtn = document.getElementById('sampleBtn');
 const fileInput = document.getElementById('fileInput');
+const dropZone = document.getElementById('dropZone');
 
-// Show message
+const samples = ['<root><name>John</name><age>30</age></root>'];
+
 function showMessage(text, type = 'success') {
-    messageArea.innerHTML = `
-        <div class="alert alert-${type}">
-            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
-            <span>${text}</span>
-        </div>
-    `;
+    messageArea.className = `alert alert-${type}`;
+    messageArea.innerHTML = text;
     setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
-// Clear message
-function clearMessage() { messageArea.innerHTML = ''; }
+function convertToJSON() {
+    const value = input.value.trim();
+    if (!value) { showMessage('Please enter XML.', 'error'); return; }
+    try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(value, 'text/xml');
+        const errorNode = doc.querySelector('parsererror');
+        if (errorNode) { showMessage('Invalid XML', 'error'); return; }
+        const json = xmlToJson(doc.documentElement);
+        outputCode.textContent = JSON.stringify(json, null, 2);
+        showMessage('Converted to JSON!', 'success');
+    } catch (error) { showMessage('Error: ' + error.message, 'error'); }
+}
 
-// XML to Object
-function xmlToObject(element) {
+function xmlToJson(node) {
+    if (node.nodeType === 3) return node.textContent.trim();
+    if (node.nodeType !== 1) return null;
     const obj = {};
-    if (element.children.length === 0) {
-        return element.textContent.trim();
+    if (node.attributes && node.attributes.length > 0) {
+        obj['@attributes'] = {};
+        Array.from(node.attributes).forEach(attr => {
+            obj['@attributes'][attr.name] = attr.value;
+        });
     }
-    Array.from(element.children).forEach(child => {
-        const value = xmlToObject(child);
-        if (obj[child.tagName]) {
-            if (!Array.isArray(obj[child.tagName])) {
-                obj[child.tagName] = [obj[child.tagName]];
+    if (node.childNodes.length === 1 && node.firstChild.nodeType === 3) {
+        return node.textContent;
+    }
+    Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === 1) {
+            const childName = child.nodeName;
+            const childValue = xmlToJson(child);
+            if (obj[childName]) {
+                if (!Array.isArray(obj[childName])) obj[childName] = [obj[childName]];
+                obj[childName].push(childValue);
+            } else {
+                obj[childName] = childValue;
             }
-            obj[child.tagName].push(value);
-        } else {
-            obj[child.tagName] = value;
         }
     });
     return obj;
 }
 
-// Convert XML to JSON
-function convertXMLToJSON() {
-    clearMessage();
-    try {
-        const value = input.value.trim();
-        if (!value) {
-            showMessage('Please enter XML data.', 'error');
-            return;
-        }
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(value, 'application/xml');
-        if (xml.querySelector('parsererror')) {
-            throw new Error('Invalid XML structure.');
-        }
-        const root = xml.documentElement;
-        const result = {};
-        result[root.tagName] = xmlToObject(root);
-        outputCode.textContent = JSON.stringify(result, null, 2);
-        showMessage('Converted to JSON!', 'success');
-    } catch (error) {
-        showMessage('Conversion failed: ' + error.message, 'error');
-    }
-}
+let sampleIndex = 0;
+function loadSample() { input.value = samples[sampleIndex]; sampleIndex = (sampleIndex + 1) % samples.length; convertToJSON(); }
+function clearAll() { input.value = ''; outputCode.textContent = '<!-- JSON output will appear here -->'; }
 
-// Clear all
-function clearAll() {
-    input.value = '';
-    outputCode.textContent = '<span class="token comment"><!-- JSON output will appear here --></span>';
-    clearMessage();
-}
-
-// Copy to clipboard
 async function copyToClipboard() {
-    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
-        showMessage('Nothing to copy', 'error');
-        return;
-    }
-    try {
-        await navigator.clipboard.writeText(outputCode.textContent);
-        showMessage('Copied to clipboard!', 'success');
-    } catch {
-        showMessage('Failed to copy', 'error');
-    }
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) { showMessage('Nothing', 'error'); return; }
+    try { await navigator.clipboard.writeText(outputCode.textContent); showMessage('Copied!', 'success'); } catch { showMessage('Failed', 'error'); }
 }
 
-// Download JSON
-function downloadJSON() {
-    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
-        showMessage('Nothing to download', 'error');
-        return;
-    }
+function downloadResult() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) { showMessage('Nothing', 'error'); return; }
     const blob = new Blob([outputCode.textContent], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'converted.json';
-    a.click();
+    const a = document.createElement('a'); a.href = url; a.download = 'output.json'; a.click();
     URL.revokeObjectURL(url);
     showMessage('Download started!', 'success');
 }
 
-// Load file
 function loadFile(file) {
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (e) => { input.value = e.target.result; convertXMLToJSON(); };
+    reader.onload = (e) => { input.value = e.target.result; showMessage(`Loaded: ${file.name}`, 'success'); convertToJSON(); };
+    reader.onerror = () => showMessage('Failed', 'error');
     reader.readAsText(file);
 }
 
-// Event listeners
-formatBtn.addEventListener('click', convertXMLToJSON);
-clearBtn.addEventListener('click', clearAll);
-copyBtn.addEventListener('click', copyToClipboard);
-downloadBtn.addEventListener('click', downloadJSON);
-fileInput.addEventListener('change', (e) => loadFile(e.target.files[0]));
+if (dropZone) {
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+}
 
-// Keyboard shortcuts
-input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') convertXMLToJSON(); });
+convertBtn.addEventListener('click', convertToJSON);
+clearBtn.addEventListener('click', clearAll);
+clearAllBtn.addEventListener('click', clearAll);
+copyBtn.addEventListener('click', copyToClipboard);
+downloadBtn.addEventListener('click', downloadResult);
+sampleBtn.addEventListener('click', loadSample);
+fileInput.addEventListener('change', (e) => loadFile(e.target.files[0]));
+input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') convertToJSON(); });

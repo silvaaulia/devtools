@@ -4,115 +4,147 @@ const outputCode = document.getElementById('outputCode');
 const messageArea = document.getElementById('messageArea');
 const formatBtn = document.getElementById('formatBtn');
 const clearBtn = document.getElementById('clearBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
 const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const sampleBtn = document.getElementById('sampleBtn');
 const fileInput = document.getElementById('fileInput');
+const dropZone = document.getElementById('dropZone');
+
+// Sample data
+const samples = [
+    '<root><item>Value1</item><item>Value2</item></root>',
+    '<?xml version="1.0"?><catalog><book id="1"><title>Example</title></book></catalog>'
+];
 
 // Show message
 function showMessage(text, type = 'success') {
-    messageArea.innerHTML = `
-        <div class="alert alert-${type}">
-            <span class="alert-icon">${type === 'success' ? '&#10004;' : '&#9888;'}</span>
-            <span>${text}</span>
-        </div>
-    `;
+    messageArea.className = `alert alert-${type}`;
+    messageArea.innerHTML = text;
     setTimeout(() => { messageArea.innerHTML = ''; }, 3000);
 }
 
-// Clear message
-function clearMessage() { messageArea.innerHTML = ''; }
-
-// Parse XML
-function parseXML() {
-    const value = input.value.trim();
-    if (!value) throw new Error('Please enter XML data.');
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(value, 'application/xml');
-    const parserError = xml.querySelector('parsererror');
-    if (parserError) throw new Error('Invalid XML: ' + parserError.textContent);
-    return xml;
-}
-
-// Format XML with indentation
+// Format XML
 function formatXML() {
-    clearMessage();
+    const value = input.value.trim();
+    if (!value) {
+        showMessage('Please enter XML.', 'error');
+        return;
+    }
     try {
-        const xml = parseXML();
-        const serializer = new XMLSerializer();
-        let text = serializer.serializeToString(xml);
-        // Simple formatter
-        let formatted = '';
-        let indent = 0;
-        const lines = text.replace(/(>)(<)(\/?)/g, '$1\n$2$3').split('\n');
-        lines.forEach(line => {
-            line = line.trim();
-            if (!line) return;
-            if (line.startsWith('</')) indent = Math.max(0, indent - 1);
-            formatted += '  '.repeat(indent) + line + '\n';
-            if (line.startsWith('<') && !line.startsWith('</') && !line.startsWith('<?') && !line.endsWith('/>') && !line.includes('</')) indent++;
-        });
-        outputCode.textContent = formatted.trim();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(value, 'text/xml');
+        const errorNode = doc.querySelector('parsererror');
+        if (errorNode) {
+            showMessage('Invalid XML', 'error');
+            return;
+        }
+        outputCode.textContent = formatXmlString(new XMLSerializer().serializeToString(doc));
         showMessage('XML formatted!', 'success');
     } catch (error) {
-        showMessage(error.message, 'error');
+        showMessage('Error formatting XML', 'error');
     }
+}
+
+function formatXmlString(xml) {
+    let formatted = '';
+    let indent = 0;
+    const lines = xml.replace(/>\s*</g, '><').split('><');
+
+    lines.forEach((line, i) => {
+        line = line.trim();
+        if (!line) return;
+
+        if (line.startsWith('/')) indent--;
+
+        formatted += '  '.repeat(Math.max(indent, 0)) + '<' + line + (i < lines.length - 1 ? '\n' : '');
+
+        if (!line.startsWith('/') && !line.startsWith('?') && !line.endsWith('/') && !line.match(/<\/\w/)) {
+            indent++;
+        }
+    });
+
+    return formatted.trim();
+}
+
+// Load sample
+let sampleIndex = 0;
+function loadSample() {
+    input.value = samples[sampleIndex];
+    sampleIndex = (sampleIndex + 1) % samples.length;
+    formatXML();
 }
 
 // Clear all
 function clearAll() {
     input.value = '';
-    outputCode.textContent = '<span class="token comment"><!-- Output will appear here --></span>';
-    clearMessage();
+    outputCode.textContent = '<!-- Formatted XML will appear here -->';
 }
 
 // Copy to clipboard
-async function copyResult() {
-    const text = outputCode.textContent;
-    if (!text || text.includes('will appear')) {
+async function copyToClipboard() {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
         showMessage('Nothing to copy', 'error');
         return;
     }
     try {
-        await navigator.clipboard.writeText(text);
-        showMessage('Copied!', 'success');
+        await navigator.clipboard.writeText(outputCode.textContent);
+        showMessage('Copied to clipboard!', 'success');
     } catch {
-        showMessage('Copy failed', 'error');
+        showMessage('Failed to copy', 'error');
     }
 }
 
-// Download XML
+// Download
 function downloadResult() {
-    const text = outputCode.textContent;
-    if (!text || text.includes('will appear')) {
+    if (!outputCode.textContent || outputCode.textContent.includes('will appear')) {
         showMessage('Nothing to download', 'error');
         return;
     }
-    const blob = new Blob([text], { type: 'application/xml' });
+    const blob = new Blob([outputCode.textContent], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'formatted.xml'; a.click();
+    a.href = url;
+    a.download = 'formatted.xml';
+    a.click();
     URL.revokeObjectURL(url);
+    showMessage('Download started!', 'success');
 }
 
 // Load file
 function loadFile(file) {
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (e) => { input.value = e.target.result; formatXML(); };
+    reader.onload = (e) => {
+        input.value = e.target.result;
+        showMessage(`Loaded: ${file.name}`, 'success');
+        formatXML();
+    };
+    reader.onerror = () => showMessage('Failed to read file', 'error');
     reader.readAsText(file);
+}
+
+// Drag & Drop
+if (dropZone) {
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) loadFile(file);
+    });
 }
 
 // Event listeners
 formatBtn.addEventListener('click', formatXML);
 clearBtn.addEventListener('click', clearAll);
-copyBtn.addEventListener('click', copyResult);
+clearAllBtn.addEventListener('click', clearAll);
+copyBtn.addEventListener('click', copyToClipboard);
 downloadBtn.addEventListener('click', downloadResult);
+sampleBtn.addEventListener('click', loadSample);
 fileInput.addEventListener('change', (e) => loadFile(e.target.files[0]));
 
-// Drag and drop
-input.addEventListener('dragover', (e) => { e.preventDefault(); input.classList.add('dragging'); });
-input.addEventListener('dragleave', () => input.classList.remove('dragging'));
-input.addEventListener('drop', (e) => { e.preventDefault(); input.classList.remove('dragging'); loadFile(e.dataTransfer.files[0]); });
-
-// Keyboard shortcut
+// Keyboard shortcuts
 input.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') formatXML(); });
