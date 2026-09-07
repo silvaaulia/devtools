@@ -3,22 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regex Tester - Test Regular Expressions Online</title>
+<title>Regex Tester - Free Online Tool</title>
 <meta name="description" content="Test regular expressions online. See matches, groups, and replacements.">
 <meta name="robots" content="index, follow">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
 <body>
-
-<!-- Background Decorations -->
-<div class="bg-decoration">
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-</div>
 
 <header class="header">
 <div class="container header-inner">
@@ -31,8 +25,8 @@
 <button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
 </div>
 <div class="header-actions">
-<button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
-<button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+<button class="icon-btn" id="themeToggle">&#9790;</button>
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </div>
 </div>
 <nav class="mobile-nav" id="mobileNav">
@@ -46,85 +40,45 @@
 
 <main class="tool-page">
 <div class="container">
-
 <div class="tool-header">
-<div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / Regex</div>
 <h1 class="tool-title">Regex Tester</h1>
-<p class="tool-desc">Test regular expressions and see matches, groups, and replacements in real time.</p>
+<p class="tool-desc">Test your regular expressions</p>
 </div>
 
-<div class="editor-container">
-
-<div class="editor-panel">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot"></span>Pattern</span>
-<div class="editor-actions">
-<label class="btn btn-ghost btn-sm" data-tooltip="Upload file" title="Upload file">&#128194;<input type="file" id="fileInput" accept=".txt,.log,.csv,.json,.xml,.html,.md" style="display:none"></label>
-<button class="btn btn-ghost btn-sm" id="sampleBtn" data-tooltip="Load sample data" title="Sample data">&#127916;</button>
-<button class="btn btn-ghost btn-sm" id="clearBtn" data-tooltip="Clear all" title="Clear">&#10005;</button>
-</div>
-</div>
-<textarea class="editor-textarea" id="regexInput" placeholder="^\w+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,}$"></textarea>
-<div class="editor-flags">
-<label class="flag-option"><input type="checkbox" id="flagG" checked><code>g</code> Global</label>
-<label class="flag-option"><input type="checkbox" id="flagI"><code>i</code> Case-insensitive</label>
-<label class="flag-option"><input type="checkbox" id="flagM"><code>m</code> Multiline</label>
-<label class="flag-option"><input type="checkbox" id="flagS"><code>s</code> Dotall</label>
-<span class="kbd-hint"><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> to test</span>
-</div>
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot"></span>Test String</span>
-<div class="editor-actions">
-<button class="btn btn-ghost btn-sm" id="clearTextBtn" data-tooltip="Clear text" title="Clear">&#10005;</button>
-</div>
-</div>
-<textarea class="editor-textarea" id="textInput" placeholder="Enter text to test against the regex pattern..."></textarea>
-
-<!-- Drag & Drop Zone -->
-<div class="drop-zone" id="dropZone">
-<div class="drop-zone-icon">&#128194;</div>
-<div class="drop-zone-text"><strong>Drop file</strong> or click to upload</div>
+<div class="regex-container">
+<div class="regex-inputs">
+<label class="regex-label">Pattern</label>
+<div class="regex-pattern-row">
+<input type="text" class="regex-input" id="regexInput" placeholder="^\w+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,}$">
+<div class="regex-flags">
+<span class="flag"><input type="checkbox" id="flagG" checked> g</span>
+<span class="flag"><input type="checkbox" id="flagI"> i</span>
+<span class="flag"><input type="checkbox" id="flagM"> m</span>
+<span class="flag"><input type="checkbox" id="flagS"> s</span>
 </div>
 </div>
 
-<div class="editor-panel">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot output"></span>Matches</span>
-<div class="editor-actions">
-<button class="btn btn-ghost btn-sm" id="copyBtn" data-tooltip="Copy results" title="Copy">&#128203;</button>
-<button class="btn btn-ghost btn-sm" id="downloadBtn" data-tooltip="Download results" title="Download">&#128229;</button>
-</div>
-</div>
-<pre><code class="language-js" id="outputCode">Matches will appear here</code></pre>
+<label class="regex-label">Test String</label>
+<textarea class="regex-textarea" id="textInput" placeholder="test@example.com&#10;admin@site.org&#10;hello@world.net"></textarea>
 </div>
 
+<div class="regex-output">
+<label class="regex-label">Matches <span id="matchCount"></span></label>
+<pre class="regex-result" id="outputCode">Matches will appear here</pre>
+<div class="regex-actions">
+<button class="btn-action" id="copyBtn">&#128203; Copy</button>
+</div>
+</div>
 </div>
 
-<div class="action-bar">
-<button class="btn btn-primary" id="testBtn">&#9898; Test Regex</button>
-<button class="btn btn-secondary" id="replaceBtn">&#128257; Replace</button>
-<button class="btn btn-secondary" id="clearAllBtn">&#128465; Clear All</button>
-</div>
-
-<div class="editor-panel" id="replacePanel" style="display:none;">
-<div class="editor-header"><span class="editor-label"><span class="editor-label-dot"></span>Replace With</span></div>
-<textarea class="editor-textarea" id="replaceInput" placeholder="$1" style="min-height:100px;"></textarea>
-<div class="editor-header" style="border-top:1px solid var(--border-color);">
-<span class="editor-label"><span class="editor-label-dot output"></span>Result</span>
-<div class="editor-actions"><button class="btn btn-ghost btn-sm" id="copyReplaceBtn" data-tooltip="Copy result" title="Copy">&#128203;</button></div>
-</div>
-<pre><code class="language-js" id="replaceOutput" style="min-height:100px; padding:16px; white-space:pre-wrap; background:var(--bg-editor);">Result will appear here</code></pre>
-</div>
-
-<div id="messageArea"></div>
-
+<div class="regex-message" id="messageArea"></div>
 </div>
 </main>
 
-<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally in your browser.</p></div></footer>
+<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally.</p></div>
 
 <script src="/public/assets/js/regex-tester.js"></script>
 <script src="/public/assets/js/theme.js"></script>
-<script>document.getElementById('hamburger')?.addEventListener('click', function(){this.classList.toggle('active');document.getElementById('mobileNav')?.classList.toggle('active');});</script>
+<script>document.getElementById('hamburger')?.addEventListener('click',function(){this.classList.toggle('active');document.getElementById('mobileNav')?.classList.toggle('active');});</script>
 </body>
 </html>
