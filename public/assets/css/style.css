@@ -102,6 +102,8 @@ input, textarea, pre, code { font-family: var(--font-mono); }
     color: white; font-size: 14px; font-weight: 700;
 }
 
+.logo:hover .logo-icon { transform: scale(1.05); }
+
 .header-nav { display: flex; gap: 4px; }
 .nav-link {
     padding: 8px 14px; font-size: 13px; font-weight: 500;
@@ -141,6 +143,56 @@ input, textarea, pre, code { font-family: var(--font-mono); }
 }
 .mobile-nav.active { display: flex; }
 .mobile-nav .nav-link { width: 100%; padding: 12px 14px; }
+
+/* ============================================
+   ABOUT PAGE
+============================================ */
+
+.about-page {
+    min-height: calc(100vh - 64px - 80px);
+    padding: 48px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-container {
+    text-align: center;
+}
+
+.about-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 32px;
+}
+
+.about-cards {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.about-card {
+    padding: 16px 32px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+[data-theme="dark"] .about-card {
+    background: var(--bg-tertiary);
+    border-color: transparent;
+}
+
+.about-back {
+    color: var(--accent);
+    font-size: 14px;
+}
+
+.about-back:hover { text-decoration: underline; }
 
 /* ============================================
    HERO
