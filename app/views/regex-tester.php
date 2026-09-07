@@ -1,84 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regex Tester - Free Online Tool</title>
-<meta name="description" content="Test regular expressions online. See matches, groups, and replacements.">
-<meta name="robots" content="index, follow">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/public/assets/css/style.css">
-</head>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width">
+<title>Regex Tester</title><link rel="stylesheet" href="/public/assets/css/style.css"></head>
 <body>
-
 <header class="header">
-<div class="container header-inner">
 <a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
-<div class="header-nav">
-<button class="nav-link" onclick="location.href='/'">All Tools</button>
-<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
-<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
-<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
-<button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
-</div>
-<div class="header-actions">
-<button class="icon-btn" id="themeToggle">&#9790;</button>
-<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-</div>
-</div>
-<nav class="mobile-nav" id="mobileNav">
-<button class="nav-link" onclick="location.href='/'">All Tools</button>
-<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
-<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
-<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
-<button class="nav-link active" onclick="location.href='/regex-tester'">Regex</button>
+<nav class="nav">
+<a href="/">All</a>
+<a href="/regex-tester" class="active">Regex</a>
+<a href="/json-formatter">JSON</a>
 </nav>
 </header>
-
-<main class="tool-page">
-<div class="container">
-<div class="tool-header">
-<h1 class="tool-title">Regex Tester</h1>
-<p class="tool-desc">Test your regular expressions</p>
+<main class="main">
+<h1>Regex Tester</h1>
+<div class="editor" style="grid-template-columns:1fr">
+<div class="panel">
+<div class="panel-header">Pattern <span id="matchCount" style="margin-left:auto;font-size:11px;color:#6366f1;font-weight:400"></span></div>
+<textarea id="pattern" style="min-height:60px" placeholder="^\w+@\w+\.\w+"></textarea>
+<div style="padding:8px 12px;background:#f9fafb;border-top:1px solid #e5e7eb;font-size:12px;display:flex;gap:8px">
+<label><input type="checkbox" id="fg" checked> g</label>
+<label><input type="checkbox" id="fi"> i</label>
+<label><input type="checkbox" id="fm"> m</label>
 </div>
-
-<div class="regex-container">
-<div class="regex-inputs">
-<label class="regex-label">Pattern</label>
-<div class="regex-pattern-row">
-<input type="text" class="regex-input" id="regexInput" placeholder="^\w+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,}$">
-<div class="regex-flags">
-<span class="flag"><input type="checkbox" id="flagG" checked> g</span>
-<span class="flag"><input type="checkbox" id="flagI"> i</span>
-<span class="flag"><input type="checkbox" id="flagM"> m</span>
-<span class="flag"><input type="checkbox" id="flagS"> s</span>
+<div class="panel-header">Test String <button id="cl" class="btn-icon">×</button></div>
+<textarea id="test" placeholder="test@example.com"></textarea>
 </div>
-</div>
-
-<label class="regex-label">Test String</label>
-<textarea class="regex-textarea" id="textInput" placeholder="test@example.com&#10;admin@site.org&#10;hello@world.net"></textarea>
-</div>
-
-<div class="regex-output">
-<label class="regex-label">Matches <span id="matchCount"></span></label>
-<pre class="regex-result" id="outputCode">Matches will appear here</pre>
-<div class="regex-actions">
-<button class="btn-action" id="copyBtn">&#128203; Copy</button>
-</div>
-</div>
-</div>
-
-<div class="regex-message" id="messageArea"></div>
-</div>
-</main>
-
-<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally.</p></div>
-
-<script src="/public/assets/js/regex-tester.js"></script>
-<script src="/public/assets/js/theme.js"></script>
-<script>document.getElementById('hamburger')?.addEventListener('click',function(){this.classList.toggle('active');document.getElementById('mobileNav')?.classList.toggle('active');});</script>
-</body>
-</html>
+<div class="panel">
+<div class="panel-header">Matches <button id="cp" class="btn-icon">⎘</button></div>
+<pre id="out"></pre>
+</div></div>
+<div id="msg"></div>
+<footer>© 2024 DevTools</footer>
+<script>
+const p=document.getElementById('pattern'),t=document.getElementById('test'),o=document.getElementById('out'),c=document.getElementById('matchCount'),m=document.getElementById('msg');
+function show(s,x='success'){m.textContent=s;m.className=x;if(s)setTimeout(()=>m.textContent='',3e3)}
+function test(){
+const g=document.getElementById('fg').checked?'g':''+(document.getElementById('fi').checked?'i':'')+(document.getElementById('fm').checked?'m':'');
+try{
+const r=new RegExp(p.value,g),matches=[];
+let x;if(g.includes('g')){while(x=r.exec(t.value))matches.push(x[0]+' @'+x.index);}else if(x=r.exec(t.value))matches.push(x[0]+' @'+x.index);
+o.textContent=matches.length?matches.join('\n'):'No matches';c.textContent=matches.length+' matches';show(matches.length?matches.length+' match'+(matches.length>1?'es':''):'No matches','success');}catch(e){o.textContent='Error: '+e.message;c.textContent='';show(e.message,'error');}}
+p.addEventListener('input',test);t.addEventListener('input',test);
+document.getElementById('fg').addEventListener('change',test);
+document.getElementById('fi').addEventListener('change',test);
+document.getElementById('fm').addEventListener('change',test);
+document.getElementById('cl').addEventListener('click',()=>{p.value='';t.value='';o.textContent='';c.textContent=''});
+document.getElementById('cp').addEventListener('click',async()=>{if(o.textContent)await navigator.clipboard.writeText(o.textContent),show('Copied!')});
+</script></body></html>
