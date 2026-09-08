@@ -1,85 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CSS Minifier - Minify CSS Online</title>
-<meta name="description" content="Minify CSS for faster page loads and smaller file sizes.">
-<meta name="robots" content="index, follow">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/public/assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Minifier - DevTools</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
 <body>
-<div class="bg-decoration"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div></div>
-<header class="header">
-<div class="container header-inner">
-<a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
-<div class="header-nav">
-<button class="nav-link" onclick="location.href='/'">All Tools</button>
-<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
-<button class="nav-link" onclick="location.href='/css-formatter'">CSS</button>
-<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
-<button class="nav-link" onclick="location.href='/regex-tester'">Regex</button>
-</div>
-<div class="header-actions">
-<button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
-<button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</div>
-</div>
-<nav class="mobile-nav" id="mobileNav">
-<button class="nav-link" onclick="location.href='/'">All Tools</button>
-<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
-<button class="nav-link" onclick="location.href='/css-formatter'">CSS</button>
-<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
-<button class="nav-link" onclick="location.href='/regex-tester'">Regex</button>
-</nav>
-</header>
-<main class="tool-page">
-<div class="container">
-<div class="tool-header">
-<div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / Minifiers</div>
-<h1 class="tool-title">CSS Minifier</h1>
-<p class="tool-desc">Minify CSS for faster page loads and smaller file sizes.</p>
-</div>
-<div class="editor-container">
-<div class="editor-panel">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot"></span>CSS Input</span>
-<div class="editor-actions">
-<label class="btn btn-ghost btn-sm" data-tooltip="Upload file">&#128194;<input type="file" accept=".css,.txt" id="fileInput" style="display:none"></label>
-<button class="btn btn-ghost btn-sm" id="sampleBtn" data-tooltip="Load sample">&#127916;</button>
-<button class="btn btn-ghost btn-sm" id="clearBtn" data-tooltip="Clear">&#10005;</button>
-</div>
-</div>
-<textarea class="editor-textarea" id="cssInput" placeholder=".class { color: red; margin: 10px; }"></textarea>
-<div class="drop-zone" id="dropZone"><div class="drop-zone-icon">&#128194;</div><div class="drop-zone-text"><strong>Drop file</strong> or click to upload</div></div>
-<div class="editor-header"><span class="kbd-hint"><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span></span></div>
-</div>
-<div class="editor-panel">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot output"></span>Minified Output</span>
-<div class="editor-actions">
-<button class="btn btn-ghost btn-sm" id="copyBtn" data-tooltip="Copy">&#128203;</button>
-<button class="btn btn-ghost btn-sm" id="downloadBtn" data-tooltip="Download">&#128229;</button>
-</div>
-</div>
-<pre><code id="outputCode"><!-- Minified CSS will appear here --></code></pre>
-</div>
-</div>
-<div class="action-bar">
-<button class="btn btn-primary" id="minifyBtn">&#128195; Minify CSS</button>
-<button class="btn btn-secondary" id="formatBtn">&#9998; Format</button>
-<button class="btn btn-secondary" id="clearAllBtn">&#128465; Clear</button>
-</div>
-<div id="messageArea"></div>
-</div>
-</main>
-<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally in your browser.</p></div></footer>
-<script src="/public/assets/js/css-minifier.js"></script>
-<script src="/public/assets/js/theme.js"></script>
-<script>document.getElementById('hamburger')?.addEventListener('click', function(){this.classList.toggle('active');document.getElementById('mobileNav')?.classList.toggle('active');});</script>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">&lt;/&gt;</span>DevTools
+            </a>
+            <div class="header-nav">
+                <a href="/" class="nav-link">All Tools</a>
+                <a href="/css-formatter" class="nav-link">CSS Formatter</a>
+                <a href="/css-minifier" class="nav-link active">CSS Minifier</a>
+                <a href="/javascript-minifier" class="nav-link">JS Minifier</a>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="tool-header">
+            <div class="tool-header-left">
+                <a href="/" class="back-btn">←</a>
+                <div>
+                    <h1 class="tool-page-title">CSS Minifier</h1>
+                    <p class="tool-page-desc">Minify CSS for faster page loads and smaller file sizes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="editor">
+            <div class="panel">
+                <div class="panel-header">
+                    <span>CSS Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon" id="uploadBtn" title="Upload file">📂</button>
+                        <button class="btn-icon" id="clearBtn" title="Clear">✕</button>
+                    </div>
+                </div>
+                <textarea id="input" placeholder=".class { color: red; margin: 10px; }"></textarea>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <span>Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon" id="copyBtn" title="Copy">⎘</button>
+                        <button class="btn-icon" id="downloadBtn" title="Download">📥</button>
+                    </div>
+                </div>
+                <pre id="output"></pre>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="minifyBtn">Minify</button>
+            <button class="btn btn-secondary" id="formatBtn">Format</button>
+            <button class="btn btn-secondary" id="clearAllBtn">Clear All</button>
+        </div>
+
+        <div id="message"></div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">© 2024 DevTools. All tools run locally in your browser.</p>
+    </footer>
+
+    <script src="/public/assets/js/theme.js"></script>
+    <script>
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        const message = document.getElementById('message');
+
+        function show(text, type = 'success') {
+            message.textContent = text;
+            message.className = type;
+            if (text) setTimeout(() => message.textContent = '', 3000);
+        }
+
+        function minify() {
+            try {
+                const css = input.value.trim();
+                if (!css) {
+                    show('Please enter CSS code', 'error');
+                    return;
+                }
+                let minified = css
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*([{}:;,])\s*/g, '$1')
+                    .replace(/;}/g, '}')
+                    .trim();
+                output.textContent = minified;
+                show('Minified successfully!');
+            } catch (e) {
+                show(e.message, 'error');
+            }
+        }
+
+        function format() {
+            try {
+                const css = input.value.trim();
+                if (!css) {
+                    show('Please enter CSS code', 'error');
+                    return;
+                }
+                let formatted = css
+                    .replace(/\s*([{}:;,])\s*/g, '$1')
+                    .replace(/;/g, ';\n')
+                    .replace(/\{/g, ' {\n')
+                    .replace(/\}/g, '\n}\n')
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line)
+                    .join('\n');
+                output.textContent = formatted;
+                show('Formatted successfully!');
+            } catch (e) {
+                show(e.message, 'error');
+            }
+        }
+
+        function download() {
+            if (!output.textContent) {
+                show('No output to download', 'error');
+                return;
+            }
+            const blob = new Blob([output.textContent], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'output.css';
+            a.click();
+            URL.revokeObjectURL(url);
+            show('Downloaded!');
+        }
+
+        function upload() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.css,.txt';
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    input.value = e.target.result;
+                };
+                reader.readAsText(file);
+            };
+            fileInput.click();
+        }
+
+        document.getElementById('minifyBtn').addEventListener('click', minify);
+        document.getElementById('formatBtn').addEventListener('click', format);
+        document.getElementById('downloadBtn').addEventListener('click', download);
+        document.getElementById('uploadBtn').addEventListener('click', upload);
+        document.getElementById('clearBtn').addEventListener('click', () => { input.value = ''; });
+        document.getElementById('clearAllBtn').addEventListener('click', () => { input.value = ''; output.textContent = ''; });
+        document.getElementById('copyBtn').addEventListener('click', async () => {
+            if (output.textContent) {
+                await navigator.clipboard.writeText(output.textContent);
+                show('Copied to clipboard!');
+            }
+        });
+    </script>
+
 </body>
 </html>

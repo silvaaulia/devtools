@@ -49,12 +49,12 @@ function renderTools() {
         card.dataset.name = tool.name.toLowerCase();
         card.dataset.category = tool.category;
         card.innerHTML = `
-            <div class="tool-card-icon" style="background: ${tool.color}20; color: ${tool.color};">${tool.icon}</div>
-            <div class="tool-card-content">
-                <h3 class="tool-card-title">${tool.name}</h3>
-                <p class="tool-card-desc">${tool.desc}</p>
+            <div class="tool-icon" style="background: ${tool.color}20; color: ${tool.color};">${tool.icon}</div>
+            <div class="tool-content">
+                <h3 class="tool-name">${tool.name}<span class="tool-arrow">→</span></h3>
+                <p class="tool-desc">${tool.desc}</p>
             </div>
-            <div class="tool-card-arrow">→</div>
+            <span class="tool-category">${tool.category}</span>
         `;
         grid.appendChild(card);
     });
@@ -63,16 +63,34 @@ function renderTools() {
 // Search functionality
 function filterTools(query) {
     const cards = document.querySelectorAll('.tool-card');
+    let visibleCount = 0;
+
     cards.forEach(card => {
         const name = card.dataset.name;
         const matches = name.includes(query.toLowerCase());
         card.style.display = matches ? '' : 'none';
+        if (matches) visibleCount++;
     });
+
+    // Show/hide no results message
+    let noResults = document.querySelector('.no-results');
+    if (visibleCount === 0) {
+        if (!noResults) {
+            noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.innerHTML = '<div class="no-results-icon">🔍</div><p class="no-results-text">No tools found</p>';
+            document.querySelector('.tools-grid').appendChild(noResults);
+        }
+        noResults.style.display = '';
+    } else if (noResults) {
+        noResults.style.display = 'none';
+    }
 }
 
 // Category filter
 function filterByCategory(category) {
     const cards = document.querySelectorAll('.tool-card');
+    let visibleCount = 0;
 
     document.querySelectorAll('.nav-link').forEach(link => {
         if (link.dataset.category) {
@@ -84,7 +102,22 @@ function filterByCategory(category) {
         const cardCategory = card.dataset.category;
         const show = category === 'all' || cardCategory === category;
         card.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
     });
+
+    // Show/hide no results message
+    let noResults = document.querySelector('.no-results');
+    if (visibleCount === 0) {
+        if (!noResults) {
+            noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.innerHTML = '<div class="no-results-icon">🔍</div><p class="no-results-text">No tools found</p>';
+            document.querySelector('.tools-grid').appendChild(noResults);
+        }
+        noResults.style.display = '';
+    } else if (noResults) {
+        noResults.style.display = 'none';
+    }
 }
 
 // Initialize

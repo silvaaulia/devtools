@@ -1,82 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CSS Formatter - Beautify CSS Online</title>
-<meta name="description" content="Format and beautify CSS code online with this free and easy-to-use CSS formatter.">
-<meta name="robots" content="index, follow">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/public/assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Formatter - DevTools</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
 <body>
 
-<header class="header">
-<div class="container header-inner">
-<a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</span>DevTools</a>
-<button class="hamburger" id="hamburger" aria-label="Menu"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button><nav class="nav-categories" id="nav-categories">
-<button class="nav-link" onclick="location.href='/'">All Tools</button>
-<button class="nav-link" onclick="location.href='/json-formatter'">JSON</button>
-<button class="nav-link" onclick="location.href='/xml-formatter'">XML</button>
-<button class="nav-link" onclick="location.href='/sql-formatter'">SQL</button>
-<button class="nav-link" onclick="location.href='/regex-tester'">Regex</button>
-</nav>
-<div class="header-actions">
-<button class="icon-btn" id="themeToggle" title="Toggle theme"><span id="themeIcon">&#9790;</span></button>
-</div>
-</div>
-</header>
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">&lt;/&gt;</span>DevTools
+            </a>
+            <div class="header-nav">
+                <a href="/" class="nav-link">All Tools</a>
+                <a href="/css-formatter" class="nav-link active">CSS Formatter</a>
+                <a href="/css-minifier" class="nav-link">CSS Minifier</a>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
+            </div>
+        </div>
+    </header>
 
-<main class="tool-page">
-<div class="container">
+    <main class="main">
+        <div class="tool-header">
+            <div class="tool-header-left">
+                <a href="/" class="back-btn">←</a>
+                <div>
+                    <h1 class="tool-page-title">CSS Formatter</h1>
+                    <p class="tool-page-desc">Format and beautify CSS code with proper indentation</p>
+                </div>
+            </div>
+        </div>
 
-<div class="tool-header">
-<div class="tool-breadcrumb"><a href="/">&larr; All Tools</a> / CSS</div>
-<h1 class="tool-title">CSS Formatter</h1>
-<p class="tool-desc">Format and beautify CSS code directly in your browser.</p>
-</div>
+        <div class="editor">
+            <div class="panel">
+                <div class="panel-header">
+                    <span>CSS Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon" id="uploadBtn" title="Upload file">📂</button>
+                        <button class="btn-icon" id="clearBtn" title="Clear">✕</button>
+                    </div>
+                </div>
+                <textarea id="input" placeholder=".class { color: red; margin: 10px; }"></textarea>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <span>Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon" id="copyBtn" title="Copy">⎘</button>
+                        <button class="btn-icon" id="downloadBtn" title="Download">📥</button>
+                    </div>
+                </div>
+                <pre id="output"></pre>
+            </div>
+        </div>
 
-<div class="editor-container">
+        <div class="actions">
+            <button class="btn btn-primary" id="formatBtn">Format</button>
+            <button class="btn btn-secondary" id="minifyBtn">Minify</button>
+            <button class="btn btn-secondary" id="clearAllBtn">Clear All</button>
+        </div>
 
-<div class="editor-panel">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot input"></span>CSS Input</span>
-<div class="editor-actions">
-<label class="btn btn-ghost btn-sm" title="Upload file">&#128194;<input type="file" accept=".css" id="fileInput" style="display:none"></label>
-<button class="btn btn-ghost btn-sm" id="clearBtn" title="Clear">&#10005;</button>
-</div>
-</div>
-<textarea class="editor-textarea" id="cssInput" placeholder="body{margin:0;padding:0;color:#333}.container{max-width:1200px;margin:auto}"></textarea>
-</div>
+        <div id="message"></div>
+    </main>
 
-<div class="editor-panel">
-<div class="editor-header">
-<span class="editor-label"><span class="editor-label-dot"></span>Formatted Output</span>
-<div class="editor-actions">
-<button class="btn btn-ghost btn-sm" id="copyBtn" title="Copy">&#128203;</button>
-<button class="btn btn-ghost btn-sm" id="downloadBtn" title="Download">&#128229;</button>
-</div>
-</div>
-<pre><code class="language-css" id="outputCode"><span class="token comment">/* Formatted CSS will appear here */</span></code></pre>
-</div>
+    <footer class="footer">
+        <p class="footer-text">© 2024 DevTools. All tools run locally in your browser.</p>
+    </footer>
 
-</div>
+    <script src="/public/assets/js/theme.js"></script>
+    <script>
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        const message = document.getElementById('message');
 
-<div class="action-bar">
-<button class="btn btn-primary" id="formatBtn">&#9998; Format CSS</button>
-</div>
+        function show(text, type = 'success') {
+            message.textContent = text;
+            message.className = type;
+            if (text) setTimeout(() => message.textContent = '', 3000);
+        }
 
-<div id="messageArea"></div>
-</div>
-</main>
+        function format() {
+            try {
+                const css = input.value.trim();
+                if (!css) {
+                    show('Please enter CSS code', 'error');
+                    return;
+                }
+                let formatted = css
+                    .replace(/\s*([{}:;,])\s*/g, '$1')
+                    .replace(/;/g, ';\n')
+                    .replace(/\{/g, ' {\n')
+                    .replace(/\}/g, '\n}\n')
+                    .split('\n')
+                    .map(function(line) { return line.trim(); })
+                    .filter(function(line) { return line; })
+                    .join('\n');
+                output.textContent = formatted;
+                show('Formatted successfully!');
+            } catch (e) {
+                show(e.message, 'error');
+            }
+        }
 
-<footer class="footer"><div class="container"><p class="footer-text">&copy; 2024 DevTools. All tools run locally in your browser.</p></div></footer>
+        function minify() {
+            try {
+                const css = input.value.trim();
+                if (!css) {
+                    show('Please enter CSS code', 'error');
+                    return;
+                }
+                let minified = css
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*([{}:;,])\s*/g, '$1')
+                    .replace(/;}/g, '}')
+                    .trim();
+                output.textContent = minified;
+                show('Minified successfully!');
+            } catch (e) {
+                show(e.message, 'error');
+            }
+        }
 
-<script src="/public/assets/js/css-formatter.js"></script>
-<script src="/public/assets/js/theme.js"></script>
-<script>document.getElementById("hamburger")?.addEventListener("click",()=>{document.getElementById("nav-categories")?.classList.toggle("active");document.getElementById("hamburger")?.classList.toggle("active")});</script>
+        function download() {
+            if (!output.textContent) {
+                show('No output to download', 'error');
+                return;
+            }
+            const blob = new Blob([output.textContent], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'output.css';
+            a.click();
+            URL.revokeObjectURL(url);
+            show('Downloaded!');
+        }
+
+        function upload() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.css,.txt';
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    input.value = e.target.result;
+                };
+                reader.readAsText(file);
+            };
+            fileInput.click();
+        }
+
+        document.getElementById('formatBtn').addEventListener('click', format);
+        document.getElementById('minifyBtn').addEventListener('click', minify);
+        document.getElementById('downloadBtn').addEventListener('click', download);
+        document.getElementById('uploadBtn').addEventListener('click', upload);
+        document.getElementById('clearBtn').addEventListener('click', function() { input.value = ''; });
+        document.getElementById('clearAllBtn').addEventListener('click', function() { input.value = ''; output.textContent = ''; });
+        document.getElementById('copyBtn').addEventListener('click', async function() {
+            if (output.textContent) {
+                await navigator.clipboard.writeText(output.textContent);
+                show('Copied to clipboard!');
+            }
+        });
+    </script>
+
 </body>
 </html>

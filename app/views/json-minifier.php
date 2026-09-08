@@ -1,14 +1,155 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>JSON Minifier</title><link rel="stylesheet" href="/public/assets/css/style.css"></head><body>
-<header class="header"><a href="/" class="logo"><span class="logo-icon">&lt;/&gt;</a>DevTools</a><nav class="nav"><a href="/">All</a><a href="/json-minifier" class="active">JSON</a></nav></header>
-<main class="main"><h1>JSON Minifier</h1>
-<div class="editor"><div class="panel"><div class="panel-header">Input <button id="cl" class="btn-icon">×</button></div><textarea id="i" placeholder='{"name":"John","age":30}'></textarea></div>
-<div class="panel"><div class="panel-header">Output <button id="cp" class="btn-icon">⎘</button></div><pre id="o"></pre></div></div>
-<div class="actions"><button id="min" class="btn-primary">Minify</button><button id="fmt" class="btn-secondary">Format</button></div>
-<div id="msg"></div></main><footer>© 2024</footer><script>
-const I=document.getElementById('i'),O=document.getElementById('o'),M=document.getElementById('msg');
-function S(t,x='success'){M.textContent=t;M.className=x;setTimeout(()=>M.textContent='',3e3)}
-document.getElementById('min').onclick=()=>{try{O.textContent=JSON.stringify(JSON.parse(I.value));S('Minified!')}catch(e){S(e.message,'error')}};
-document.getElementById('fmt').onclick=()=>{try{O.textContent=JSON.stringify(JSON.parse(I.value),null,2);S('Formatted!')}catch(e){S(e.message,'error')}};
-document.getElementById('cl').onclick=()=>{I.value='';O.textContent=''};
-document.getElementById('cp').onclick=async()=>{if(O.textContent)await navigator.clipboard.writeText(O.textContent),S('Copied!')};
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Minifier - DevTools</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/assets/css/style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">&lt;/&gt;</span>DevTools
+            </a>
+            <div class="header-nav">
+                <a href="/" class="nav-link">All Tools</a>
+                <a href="/json-formatter" class="nav-link">JSON Formatter</a>
+                <a href="/json-minifier" class="nav-link active">JSON Minifier</a>
+                <a href="/json-validator" class="nav-link">JSON Validator</a>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" title="Toggle theme">&#9790;</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="tool-header">
+            <div class="tool-header-left">
+                <a href="/" class="back-btn">←</a>
+                <div>
+                    <h1 class="tool-page-title">JSON Minifier</h1>
+                    <p class="tool-page-desc">Minify JSON for smaller file size</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="editor">
+            <div class="panel">
+                <div class="panel-header">
+                    <span>JSON Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon" id="uploadBtn" title="Upload file">📂</button>
+                        <button class="btn-icon" id="clearBtn" title="Clear">✕</button>
+                    </div>
+                </div>
+                <textarea id="input" placeholder='{"name": "John", "age": 30}'></textarea>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <span>Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon" id="copyBtn" title="Copy">⎘</button>
+                        <button class="btn-icon" id="downloadBtn" title="Download">📥</button>
+                    </div>
+                </div>
+                <pre id="output"></pre>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="minifyBtn">Minify</button>
+            <button class="btn btn-secondary" id="formatBtn">Format</button>
+            <button class="btn btn-secondary" id="clearAllBtn">Clear All</button>
+        </div>
+
+        <div id="message"></div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">© 2024 DevTools. All tools run locally in your browser.</p>
+    </footer>
+
+    <script src="/public/assets/js/theme.js"></script>
+    <script>
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        const message = document.getElementById('message');
+
+        function show(text, type = 'success') {
+            message.textContent = text;
+            message.className = type;
+            if (text) setTimeout(() => message.textContent = '', 3000);
+        }
+
+        function minify() {
+            try {
+                output.textContent = JSON.stringify(JSON.parse(input.value));
+                show('Minified successfully!');
+            } catch (e) {
+                show(e.message, 'error');
+            }
+        }
+
+        function format() {
+            try {
+                output.textContent = JSON.stringify(JSON.parse(input.value), null, 2);
+                show('Formatted successfully!');
+            } catch (e) {
+                show(e.message, 'error');
+            }
+        }
+
+        function download() {
+            if (!output.textContent) {
+                show('No output to download', 'error');
+                return;
+            }
+            const blob = new Blob([output.textContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'output.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            show('Downloaded!');
+        }
+
+        function upload() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json,.txt';
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    input.value = e.target.result;
+                };
+                reader.readAsText(file);
+            };
+            fileInput.click();
+        }
+
+        document.getElementById('minifyBtn').addEventListener('click', minify);
+        document.getElementById('formatBtn').addEventListener('click', format);
+        document.getElementById('downloadBtn').addEventListener('click', download);
+        document.getElementById('uploadBtn').addEventListener('click', upload);
+        document.getElementById('clearBtn').addEventListener('click', () => { input.value = ''; });
+        document.getElementById('clearAllBtn').addEventListener('click', () => { input.value = ''; output.textContent = ''; });
+        document.getElementById('copyBtn').addEventListener('click', async () => {
+            if (output.textContent) {
+                await navigator.clipboard.writeText(output.textContent);
+                show('Copied to clipboard!');
+            }
+        });
+    </script>
+
+</body>
+</html>
